@@ -4,6 +4,7 @@ import de.verilyzed.commands.buy;
 import de.verilyzed.commands.echo;
 import de.verilyzed.commands.test;
 import de.verilyzed.events.onPlayerJoinEvent;
+import de.verilyzed.events.onPlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class KrassAlla extends JavaPlugin {
@@ -37,6 +38,7 @@ public final class KrassAlla extends JavaPlugin {
 
     public void enableListener() {
         getServer().getPluginManager().registerEvents(new onPlayerJoinEvent(), this);
+        getServer().getPluginManager().registerEvents(new onPlayerQuitEvent(), this);
     }
 
     @Override
