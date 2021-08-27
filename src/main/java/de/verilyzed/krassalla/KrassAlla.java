@@ -1,6 +1,10 @@
 package de.verilyzed.krassalla;
 
+import de.verilyzed.commands.test;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public final class KrassAlla extends JavaPlugin {
 
@@ -9,7 +13,13 @@ public final class KrassAlla extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        log("DU pischer ey");
 
+        enableCommands();
+    }
+
+    public void enableCommands() {
+        getCommand("test").setExecutor(new test());
     }
 
     @Override

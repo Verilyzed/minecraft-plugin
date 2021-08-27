@@ -2,3 +2,6 @@ name: KrassAlla
 version: '${project.version}'
 main: de.verilyzed.krassalla.KrassAlla
 api-version: 1.17
+commands:
+  test:
+    usage: /test
