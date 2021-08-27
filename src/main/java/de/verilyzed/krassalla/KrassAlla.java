@@ -1,6 +1,7 @@
 package de.verilyzed.krassalla;
 
 import de.verilyzed.commands.buy;
+import de.verilyzed.commands.echo;
 import de.verilyzed.commands.test;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -33,6 +34,7 @@ public final class KrassAlla extends JavaPlugin {
     public void enableCommands() {
         getCommand("test").setExecutor(new test());
         getCommand("buy").setExecutor(new buy());
+        getCommand("echo").setExecutor(new echo());
     }
 
     @Override
