@@ -13,13 +13,13 @@ public class test implements CommandExecutor {
         if (sender instanceof Player) {
             Player p = ((Player) sender).getPlayer();
 
-            if (command.getName().equalsIgnoreCase("buy")) {
+            if (command.getName().equalsIgnoreCase("test")) {
 
 
                 return true;
             }
         } else {
-            KrassAlla.log("");
+            KrassAlla.log("You can't execute this command in console.");
         }
 
         return false;

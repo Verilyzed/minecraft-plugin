@@ -3,11 +3,8 @@ package de.verilyzed.krassalla;
 import de.verilyzed.commands.buy;
 import de.verilyzed.commands.echo;
 import de.verilyzed.commands.test;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
+import de.verilyzed.events.onPlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 public final class KrassAlla extends JavaPlugin {
 
@@ -16,10 +13,11 @@ public final class KrassAlla extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-
         loadConfig();
 
         enableCommands();
+
+        enableListener();
 
         log("Plugin loaded.");
     }
@@ -37,12 +35,14 @@ public final class KrassAlla extends JavaPlugin {
         getCommand("echo").setExecutor(new echo());
     }
 
+    public void enableListener() {
+        getServer().getPluginManager().registerEvents(new onPlayerJoinEvent(), this);
+    }
+
     @Override
     public void onDisable() {
         // Plugin shutdown logic
     }
-
-
 
     public static void log(String text) {
         System.out.println(PREFIX + text);

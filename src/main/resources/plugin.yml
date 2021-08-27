@@ -5,5 +5,7 @@ api-version: 1.17
 commands:
   test:
     usage: /test
+  buy:
+    usage: /buy
   echo:
     usage: /echo
