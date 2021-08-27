@@ -1,5 +1,6 @@
 package de.verilyzed.commands;
 
+import de.verilyzed.krassalla.KrassAlla;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,11 +11,15 @@ public class test implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
-            if (command.getName().equalsIgnoreCase("test")) {
-                sender.sendMessage("Du pischer benutz den command net");
+            Player p = ((Player) sender).getPlayer();
+
+            if (command.getName().equalsIgnoreCase("buy")) {
+
 
                 return true;
             }
+        } else {
+            KrassAlla.log("");
         }
 
         return false;
