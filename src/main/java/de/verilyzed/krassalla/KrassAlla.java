@@ -7,6 +7,11 @@ import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public final class KrassAlla extends JavaPlugin {
 
     public static String PREFIX;
@@ -26,6 +31,14 @@ public final class KrassAlla extends JavaPlugin {
     public void loadConfig() {
         getConfig().options().copyDefaults(true);
         saveConfig();
+
+        Path path = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder().toString() + "\\PlayerData\\");
+
+        try {
+            Files.createDirectories(path);
+        } catch (IOException e) {
+
+        }
 
         PREFIX = this.getConfig().getString("Config.General.PREFIX");
     }
