@@ -27,17 +27,22 @@ public class onPlayerJoinEvent implements Listener {
 
         //Create file for each new joining user
         if (!Files.exists(jsonpath)) {
+            FileWriter file = null;
             try {
-                Path path = Files.createFile(jsonpath);
-
                 JSONObject json = new JSONObject();
                 json.put("money", 100);
 
-                FileWriter file = new FileWriter(jsonpath.toString());
+                file = new FileWriter(jsonpath.toString());
                 file.write(json.toJSONString());
 
             } catch (IOException exception) {
-                KrassAlla.log("File already exists.");
+                KrassAlla.log("IOException at onPlayerJoin.");
+            } finally {
+                try {
+                    file.close();
+                } catch (IOException exception) {
+                    KrassAlla.log("IOException at onPlayerJoin.");
+                }
             }
         } else {
             KrassAlla.log("File already exists.");
