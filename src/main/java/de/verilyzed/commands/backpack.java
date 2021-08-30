@@ -2,10 +2,12 @@ package de.verilyzed.commands;
 
 import de.verilyzed.krassalla.KrassAlla;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -33,13 +35,15 @@ public class backpack implements CommandExecutor {
                 JSONParser parser = new JSONParser();
 
                 try {
-                    JSONObject json = (JSONObject) parser.parse(new FileReader(KrassAlla.dataFolder + ""));
+                    JSONObject json = (JSONObject) parser.parse(new FileReader(KrassAlla.dataFolder + "\\PlayerData\\" + p.getUniqueId() + ".json"));
 
                     JSONArray backpack = (JSONArray) json.get("backpack");
 
                     for (Object o : backpack) {
-                        inv.addItem();
+                        inv.addItem((ItemStack) o);
                     }
+
+                    p.openInventory(inv);
 
                 } catch (IOException | ParseException e) {
                     e.printStackTrace();

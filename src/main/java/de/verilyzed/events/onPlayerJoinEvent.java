@@ -2,10 +2,12 @@ package de.verilyzed.events;
 
 import de.verilyzed.krassalla.KrassAlla;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -34,6 +36,9 @@ public class onPlayerJoinEvent implements Listener {
                 json.put("money", 100);
 
                 JSONArray backpack = new JSONArray();
+
+                ItemStack itemStack = new ItemStack(Material.DIAMOND_AXE);
+                backpack.add(itemStack.toString());
 
                 json.put("backpack", backpack);
 
