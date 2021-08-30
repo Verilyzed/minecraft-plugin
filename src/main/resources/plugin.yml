@@ -2,6 +2,7 @@ name: KrassAlla
 version: '${project.version}'
 main: de.verilyzed.krassalla.KrassAlla
 api-version: 1.17
+authors: [Colin, Thies, Jost]
 commands:
   test:
     usage: /test
@@ -9,3 +10,5 @@ commands:
     usage: /buy
   echo:
     usage: /echo
+  backpack:
+    usage: /backpack

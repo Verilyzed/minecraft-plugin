@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.File;
@@ -31,6 +32,10 @@ public class onPlayerJoinEvent implements Listener {
             try {
                 JSONObject json = new JSONObject();
                 json.put("money", 100);
+
+                JSONArray backpack = new JSONArray();
+
+                json.put("backpack", backpack);
 
                 file = new FileWriter(jsonpath.toString());
                 file.write(json.toJSONString());
