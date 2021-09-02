@@ -75,6 +75,8 @@ public class json implements CommandExecutor {
 
                         return true;
                     }
+
+                    p.sendMessage("§cSyntax: /json [modify|read]");
                 } else {
                     p.sendMessage("§cSyntax: /json [modify|read]");
                 }

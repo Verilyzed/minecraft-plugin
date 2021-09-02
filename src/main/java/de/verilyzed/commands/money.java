@@ -50,7 +50,7 @@ public class money implements CommandExecutor {
                             }
                             FileReader frreceiver = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + recuuid + ".json");
                             Scanner scannerreceiver  = new Scanner(frreceiver);
-                            JSONObject jsonObjectreceiver = (JSONObject) parser.parse(scanner.nextLine());
+                            JSONObject jsonObjectreceiver = (JSONObject) parser.parse(scannerreceiver.nextLine());
                             long moneyreceiver = (long)jsonObjectreceiver.get("money");
                             scannerreceiver.close();
                             frreceiver.close();
