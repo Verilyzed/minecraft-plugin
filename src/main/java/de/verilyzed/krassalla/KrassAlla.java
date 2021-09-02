@@ -4,6 +4,7 @@ import de.verilyzed.commands.*;
 import de.verilyzed.events.onInventoryCloseEvent;
 import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
+import de.verilyzed.tabcompleter.Json_TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -23,6 +24,8 @@ public final class KrassAlla extends JavaPlugin {
         loadConfig();
 
         enableCommands();
+
+        enableTabCompleter();
 
         enableListener();
 
@@ -53,6 +56,10 @@ public final class KrassAlla extends JavaPlugin {
         getCommand("backpack").setExecutor(new backpack());
         getCommand("money").setExecutor(new money());
         getCommand("json").setExecutor(new json());
+    }
+
+    public void enableTabCompleter() {
+        getCommand("json").setTabCompleter(new Json_TabCompleter());
     }
 
     public void enableListener() {
