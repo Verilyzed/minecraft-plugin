@@ -1,9 +1,6 @@
 package de.verilyzed.krassalla;
 
-import de.verilyzed.commands.backpack;
-import de.verilyzed.commands.buy;
-import de.verilyzed.commands.echo;
-import de.verilyzed.commands.test;
+import de.verilyzed.commands.*;
 import de.verilyzed.events.onInventoryCloseEvent;
 import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
@@ -54,6 +51,7 @@ public final class KrassAlla extends JavaPlugin {
         getCommand("buy").setExecutor(new buy());
         getCommand("echo").setExecutor(new echo());
         getCommand("backpack").setExecutor(new backpack());
+        getCommand("json").setExecutor(new json());
     }
 
     public void enableListener() {

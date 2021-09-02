@@ -12,3 +12,5 @@ commands:
     usage: /echo
   backpack:
     usage: /backpack
+  json:
+    usage: /json
