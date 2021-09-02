@@ -1,5 +1,6 @@
 package de.verilyzed.events;
 
+import de.verilyzed.generic.FileManager;
 import de.verilyzed.krassalla.KrassAlla;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -24,34 +25,22 @@ public class onPlayerJoinEvent implements Listener {
         //Welcome message
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.sendMessage("§8[§6+§8] §f" + e.getPlayer().getName());
+            e.setJoinMessage("");
         }
 
         Path jsonpath = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder().toString() + "/PlayerData/" + e.getPlayer().getUniqueId() + ".json");
 
         //Create file for each new joining user
         if (!Files.exists(jsonpath)) {
-            FileWriter file = null;
-            try {
-                JSONObject json = new JSONObject();
-                json.put("name", e.getPlayer().getName());
-                json.put("money", 100);
+            JSONObject json = new JSONObject();
+            json.put("name", e.getPlayer().getName());
+            json.put("money", 100);
 
-                JSONArray backpack = new JSONArray();
+            JSONArray backpack = new JSONArray();
 
-                json.put("backpack", backpack);
+            json.put("backpack", backpack);
 
-                file = new FileWriter(jsonpath.toString());
-                file.write(json.toJSONString());
-
-            } catch (IOException exception) {
-                KrassAlla.log("IOException at onPlayerJoin.");
-            } finally {
-                try {
-                    file.close();
-                } catch (IOException exception) {
-                    KrassAlla.log("IOException at onPlayerJoin.");
-                }
-            }
+            FileManager.setJSONObject(e.getPlayer().getUniqueId(), json);
         } else {
             KrassAlla.log("File already exists.");
         }

@@ -1,5 +1,6 @@
 package de.verilyzed.commands;
 
+import de.verilyzed.generic.FileManager;
 import de.verilyzed.krassalla.KrassAlla;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -36,30 +37,19 @@ public class backpack implements CommandExecutor {
 
                 Inventory inv = Bukkit.createInventory(p, InventoryType.CHEST, "Backpack");
 
-                try {
-                    FileReader fr = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + p.getUniqueId() + ".json");
-                    Scanner scanner  = new Scanner(fr);
+                JSONObject jsonObject = FileManager.getJSONObject(p.getUniqueId());
 
-                    JSONParser parser = new JSONParser();
-                    JSONObject jsonObject = (JSONObject) parser.parse(scanner.nextLine());
+                JSONArray jsonArray = (JSONArray) jsonObject.get("backpack");
 
-                    JSONArray jsonArray = (JSONArray) jsonObject.get("backpack");
+                for (Object object : jsonArray) {
+                    JSONArray itemArray = (JSONArray) object;
 
-                    for (Object object : jsonArray) {
-                        JSONArray itemArray = (JSONArray) object;
-
-                        ItemStack itemStack = new ItemStack(Material.valueOf((String) itemArray.get(1)));
-                        itemStack.setAmount(Integer.parseInt(itemArray.get(2).toString()));
-                        inv.setItem(Integer.parseInt(itemArray.get(0).toString()), itemStack);
-                    }
-
-                    scanner.close();
-                    fr.close();
-
-                    p.openInventory(inv);
-                } catch (IllegalStateException | ParseException | NumberFormatException | IOException e) {
-                    e.printStackTrace();
+                    ItemStack itemStack = new ItemStack(Material.valueOf((String) itemArray.get(1)));
+                    itemStack.setAmount(Integer.parseInt(itemArray.get(2).toString()));
+                    inv.setItem(Integer.parseInt(itemArray.get(0).toString()), itemStack);
                 }
+
+                p.openInventory(inv);
                 return true;
             }
         }

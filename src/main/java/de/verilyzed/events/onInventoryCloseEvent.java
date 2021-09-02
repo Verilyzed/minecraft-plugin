@@ -1,5 +1,6 @@
 package de.verilyzed.events;
 
+import de.verilyzed.generic.FileManager;
 import de.verilyzed.krassalla.KrassAlla;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,44 +25,28 @@ public class onInventoryCloseEvent implements Listener {
 
             Inventory inv = e.getInventory();
 
-            JSONObject json = new JSONObject();
+            JSONObject jsonObject = FileManager.getJSONObject(e.getPlayer().getUniqueId());
 
-            try {
-                FileReader fr = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + e.getPlayer().getUniqueId() + ".json");
-                Scanner scanner  = new Scanner(fr);
+            jsonObject.remove("backpack");
 
-                JSONParser parser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) parser.parse(scanner.nextLine());
+            JSONArray jsonArray = new JSONArray();
 
-                jsonObject.remove("backpack");
+            for (int i = 0; i < inv.getSize(); i++) {
+                if (inv.getItem(i) != null) {
+                    ItemStack item = inv.getItem(i);
 
-                JSONArray jsonArray = new JSONArray();
+                    JSONArray itemArray = new JSONArray();
+                    itemArray.add(i);
+                    itemArray.add(item.getType().toString());
+                    itemArray.add(item.getAmount());
 
-                for (int i = 0; i < inv.getSize(); i++) {
-                    if (inv.getItem(i) != null) {
-                        ItemStack item = inv.getItem(i);
-
-                        JSONArray itemArray = new JSONArray();
-                        itemArray.add(i);
-                        itemArray.add(item.getType().toString());
-                        itemArray.add(item.getAmount());
-
-                        jsonArray.add(itemArray);
-                    }
+                    jsonArray.add(itemArray);
                 }
-
-                jsonObject.put("backpack", jsonArray);
-
-
-                FileWriter fileWriter = new FileWriter(KrassAlla.dataFolder + "/PlayerData/" + e.getPlayer().getUniqueId() + ".json");
-                fileWriter.write(jsonObject.toJSONString());
-
-                fileWriter.close();
-                scanner.close();
-                fr.close();
-            } catch (IOException | ParseException exception) {
-                exception.printStackTrace();
             }
+
+            jsonObject.put("backpack", jsonArray);
+
+            FileManager.setJSONObject(e.getPlayer().getUniqueId(), jsonObject);
         }
     }
 }

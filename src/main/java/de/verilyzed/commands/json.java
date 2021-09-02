@@ -69,30 +69,18 @@ public class json implements CommandExecutor {
                         if (args.length > 1) {
                             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                                 if (args[1].equalsIgnoreCase(onlinePlayer.getName())) {
-                                    try {
-                                        FileReader fileReader = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + onlinePlayer.getUniqueId() + ".json");
-                                        Scanner scanner = new Scanner(fileReader);
+                                    JSONObject json = FileManager.getJSONObject(onlinePlayer.getUniqueId());
 
-                                        String jsonString = scanner.nextLine();
-                                        scanner.close();
-
-                                        JSONParser parser = new JSONParser();
-                                        JSONObject json = (JSONObject) parser.parse(jsonString);
-
-                                        if (args.length > 2) {
-                                            if (json.containsKey(args[2])) {
-                                                p.sendMessage(KrassAlla.PREFIX + args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase() + ": " + json.get(args[2]));
-                                            } else {
-                                                p.sendMessage(KrassAlla.PREFIX + "The key " + args[2] + " does not exist.");
-                                            }
+                                    if (args.length > 2) {
+                                        if (json.containsKey(args[2])) {
+                                            p.sendMessage(KrassAlla.PREFIX + args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase() + ": " + json.get(args[2]));
                                         } else {
-                                            for (Object key : json.keySet()) {
-                                                p.sendMessage(KrassAlla.PREFIX + key.toString().substring(0, 1).toUpperCase() + key.toString().substring(1).toLowerCase() + ": " + json.get(key));
-                                            }
+                                            p.sendMessage(KrassAlla.PREFIX + "The key " + args[2] + " does not exist.");
                                         }
-
-                                    } catch (IOException | ParseException e) {
-                                        e.printStackTrace();
+                                    } else {
+                                        for (Object key : json.keySet()) {
+                                            p.sendMessage(KrassAlla.PREFIX + key.toString().substring(0, 1).toUpperCase() + key.toString().substring(1).toLowerCase() + ": " + json.get(key));
+                                        }
                                     }
                                 }
                             }
