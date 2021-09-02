@@ -1,5 +1,7 @@
 package de.verilyzed.commands;
 
+import de.verilyzed.generic.FileManager;
+import de.verilyzed.generic.Other;
 import de.verilyzed.krassalla.KrassAlla;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -15,45 +17,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class money implements CommandExecutor {
-    private String getPlayerUUID(String Name) {
-        for (Player receiver : Bukkit.getOnlinePlayers()) {
-            if (!Name.equalsIgnoreCase(receiver.getName()))
-                continue;
-            return receiver.getUniqueId().toString();
-        }
-        return "";
-    }
 
-    private JSONObject getPlayerJSON(String uuid) {
-        FileReader fr = null;
-        JSONObject playerJSON = null;
-        try {
-            fr = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + uuid + ".json");
-            Scanner scanner = new Scanner(fr);
-            JSONParser parser = new JSONParser();
-            playerJSON = (JSONObject) parser.parse(scanner.nextLine());
-            fr.close();
-            scanner.close();
-        } catch (IllegalStateException | ParseException | NumberFormatException | IOException e) {
-            e.printStackTrace();
-        }
-        return playerJSON;
-    }
-
-    private void setMoney(JSONObject p, long difference, String uuid) {
-        long money = -1;
-        try {
-            money = (long) p.get("money");
-            p.put("money", money);
-            FileWriter fileWriter = new FileWriter(KrassAlla.dataFolder + "/PlayerData/" + uuid + ".json");
-            fileWriter.write(p.toJSONString());
-            fileWriter.close();
-        } catch (IllegalStateException | NumberFormatException | IOException e) {
-            e.printStackTrace();
-        }
-
+    private void setMoney(JSONObject p, long difference, UUID uuid) {
+        p.put("money", difference);
+        FileManager.setJSONObject(uuid, p);
     }
 
     @Override
@@ -63,8 +33,8 @@ public class money implements CommandExecutor {
             if (sender instanceof Player) {
                 //get the player, his uuid, his JSON and his money
                 Player p = (Player) sender;
-                String uuidSender = p.getUniqueId().toString();
-                JSONObject senderJSON = getPlayerJSON(uuidSender);
+                UUID uuidSender = p.getUniqueId();
+                JSONObject senderJSON = FileManager.getJSONObject(uuidSender);
                 long moneySender = (long) senderJSON.get("money");
                 if (args.length > 0) {
                     switch(args[0].toLowerCase()) {
@@ -74,8 +44,8 @@ public class money implements CommandExecutor {
                                 p.sendMessage(KrassAlla.PREFIX + "Du hast nicht genügend Geld.");
                                 return true;
                             }
-                            String uuidReceiver = getPlayerUUID(args[1]);
-                            JSONObject receiverJSON = getPlayerJSON(uuidReceiver);
+                            UUID uuidReceiver = Other.getPlayerUUID(args[1]);
+                            JSONObject receiverJSON = FileManager.getJSONObject(uuidReceiver);
                             long moneyReceiver = (long) receiverJSON.get("money");
                             moneyReceiver += Integer.parseInt(args[2]);
                             moneySender -= Integer.parseInt(args[2]);
