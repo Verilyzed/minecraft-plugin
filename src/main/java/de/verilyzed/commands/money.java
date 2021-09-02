@@ -26,39 +26,31 @@ public class money implements CommandExecutor {
         return "";
     }
 
-    private long getMoney(String p) {
+    private JSONObject getPlayerJSON(String uuid) {
         FileReader fr = null;
-        long money = -1;
+        JSONObject playerJSON = null;
         try {
-            fr = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + p + ".json");
+            fr = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + uuid + ".json");
             Scanner scanner = new Scanner(fr);
             JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse(scanner.nextLine());
-            money = (long) jsonObject.get("money");
+            playerJSON = (JSONObject) parser.parse(scanner.nextLine());
             fr.close();
             scanner.close();
         } catch (IllegalStateException | ParseException | NumberFormatException | IOException e) {
             e.printStackTrace();
         }
-        return money;
+        return playerJSON;
     }
 
-    private void setMoney(String p, long difference) {
-        FileReader fr = null;
+    private void setMoney(JSONObject p, long difference, String uuid) {
         long money = -1;
         try {
-            fr = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + p + ".json");
-            Scanner scanner = new Scanner(fr);
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse(scanner.nextLine());
-            money = (long) jsonObject.get("money");
-            fr.close();
-            scanner.close();
-            jsonObject.put("money", money);
-            FileWriter fileWriter = new FileWriter(KrassAlla.dataFolder + "/PlayerData/" + p + ".json");
-            fileWriter.write(jsonObject.toJSONString());
+            money = (long) p.get("money");
+            p.put("money", money);
+            FileWriter fileWriter = new FileWriter(KrassAlla.dataFolder + "/PlayerData/" + uuid + ".json");
+            fileWriter.write(p.toJSONString());
             fileWriter.close();
-        } catch (IllegalStateException | ParseException | NumberFormatException | IOException e) {
+        } catch (IllegalStateException | NumberFormatException | IOException e) {
             e.printStackTrace();
         }
 
@@ -69,30 +61,41 @@ public class money implements CommandExecutor {
 
         if (command.getName().equalsIgnoreCase("money")) {
             if (sender instanceof Player) {
+                //get the player, his uuid, his JSON and his money
                 Player p = (Player) sender;
-                long money = getMoney(p.getUniqueId().toString());
+                String uuidSender = p.getUniqueId().toString();
+                JSONObject senderJSON = getPlayerJSON(uuidSender);
+                long moneySender = (long) senderJSON.get("money");
                 if (args.length > 0) {
-                    if (args[0].equalsIgnoreCase("give") && args.length == 3) {
-                        try {
-                            if (money < Integer.parseInt(args[2])) {
+                    switch(args[0].toLowerCase()) {
+                        case "give":
+                            if (args.length <3) break;
+                            if (moneySender < Integer.parseInt(args[2]) || Integer.parseInt(args[2]) < 0) {
                                 p.sendMessage(KrassAlla.PREFIX + "Du hast nicht genügend Geld.");
+                                return true;
                             }
-                            String recuuid = getPlayerUUID(args[1]);
-                            long moneyreceiver = getMoney(recuuid);
-                            moneyreceiver += Integer.parseInt(args[2]);
-                            money -= Integer.parseInt(args[2]);
-                            setMoney(p.getUniqueId().toString(), money);
-                            setMoney(recuuid, moneyreceiver);
-
-                        } catch (IllegalStateException | NumberFormatException e) {
-                            e.printStackTrace();
-                        }
-                        return true;
+                            String uuidReceiver = getPlayerUUID(args[1]);
+                            JSONObject receiverJSON = getPlayerJSON(uuidReceiver);
+                            long moneyReceiver = (long) receiverJSON.get("money");
+                            moneyReceiver += Integer.parseInt(args[2]);
+                            moneySender -= Integer.parseInt(args[2]);
+                            setMoney(senderJSON, moneySender, uuidSender);
+                            setMoney(receiverJSON, moneyReceiver, uuidReceiver);
+                            return true;
+                        case "add":
+                            if (args.length != 2) break;
+                            moneySender += (long) Integer.parseInt(args[1]);
+                            setMoney(senderJSON, moneySender, uuidSender);
+                            p.sendMessage("Du Admin hast dir " + args[1] + " Eugen gegeben. Frech von dir.");
+                            return true;
+                        default:
+                            p.sendMessage("Falscher Befehl, unterstützt wird:");
+                            p.sendMessage("/money");
+                            p.sendMessage("/money give [empfänger] [betrag]");
                     }
                     return true;
                 }
-                p.sendMessage(KrassAlla.PREFIX + "Du hast " + money + " Geld");
-
+                p.sendMessage(KrassAlla.PREFIX + "Du hast " + moneySender + " Geld");
                 return true;
             }
         }
