@@ -37,8 +37,18 @@ public class onPlayerJoinEvent implements Listener {
 
                 JSONArray backpack = new JSONArray();
 
-                ItemStack itemStack = new ItemStack(Material.DIAMOND_AXE);
-                backpack.add(itemStack.toString());
+                JSONArray item1 = new JSONArray();
+                item1.add(0);
+                item1.add(Material.ANDESITE.toString());
+                item1.add(10);
+
+                JSONArray item2 = new JSONArray();
+                item2.add(1);
+                item2.add(Material.ANDESITE.toString());
+                item2.add(10);
+
+                backpack.add(item1);
+                backpack.add(item2);
 
                 json.put("backpack", backpack);
 
