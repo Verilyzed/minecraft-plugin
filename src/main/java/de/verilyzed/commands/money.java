@@ -40,10 +40,11 @@ public class money implements CommandExecutor {
                     Scanner scanner  = new Scanner(fr);
                     JSONParser parser = new JSONParser();
                     JSONObject jsonObject = (JSONObject) parser.parse(scanner.nextLine());
-                    int money = (int)jsonObject.get("money");
+
                     scanner.close();
                     fr.close();
-                    p.sendMessage(KrassAlla.PREFIX + "Du hast " + money + "Geld");
+
+                    p.sendMessage(KrassAlla.PREFIX + "Du hast " + jsonObject.get("money") + "Geld");
                 } catch (IllegalStateException | ParseException | NumberFormatException | IOException e) {
                     e.printStackTrace();
                 }
