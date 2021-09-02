@@ -33,6 +33,7 @@ public class onPlayerJoinEvent implements Listener {
             FileWriter file = null;
             try {
                 JSONObject json = new JSONObject();
+                json.put("name", e.getPlayer().getName());
                 json.put("money", 100);
 
                 JSONArray backpack = new JSONArray();
