@@ -37,7 +37,7 @@ public class backpack implements CommandExecutor {
                 Inventory inv = Bukkit.createInventory(p, InventoryType.CHEST, "Backpack");
 
                 try {
-                    FileReader fr = new FileReader(KrassAlla.dataFolder + "\\PlayerData\\" + p.getUniqueId() + ".json");
+                    FileReader fr = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + p.getUniqueId() + ".json");
                     Scanner scanner  = new Scanner(fr);
 
                     JSONParser parser = new JSONParser();

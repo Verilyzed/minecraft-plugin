@@ -26,7 +26,7 @@ public class onPlayerJoinEvent implements Listener {
             p.sendMessage("§8[§6+§8] §f" + e.getPlayer().getName());
         }
 
-        Path jsonpath = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder().toString() + "\\PlayerData\\" + e.getPlayer().getUniqueId() + ".json");
+        Path jsonpath = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder().toString() + "/PlayerData/" + e.getPlayer().getUniqueId() + ".json");
 
         //Create file for each new joining user
         if (!Files.exists(jsonpath)) {

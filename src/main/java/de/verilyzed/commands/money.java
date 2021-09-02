@@ -36,7 +36,7 @@ public class money implements CommandExecutor {
                  return true;
                 }
                 try {
-                    FileReader fr = new FileReader(KrassAlla.dataFolder + "\\PlayerData\\" + p.getUniqueId() + ".json");
+                    FileReader fr = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + p.getUniqueId() + ".json");
                     Scanner scanner  = new Scanner(fr);
                     JSONParser parser = new JSONParser();
                     JSONObject jsonObject = (JSONObject) parser.parse(scanner.nextLine());

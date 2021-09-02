@@ -27,7 +27,7 @@ public class onInventoryCloseEvent implements Listener {
             JSONObject json = new JSONObject();
 
             try {
-                FileReader fr = new FileReader(KrassAlla.dataFolder + "\\PlayerData\\" + e.getPlayer().getUniqueId() + ".json");
+                FileReader fr = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + e.getPlayer().getUniqueId() + ".json");
                 Scanner scanner  = new Scanner(fr);
 
                 JSONParser parser = new JSONParser();
@@ -53,7 +53,7 @@ public class onInventoryCloseEvent implements Listener {
                 jsonObject.put("backpack", jsonArray);
 
 
-                FileWriter fileWriter = new FileWriter(KrassAlla.dataFolder + "\\PlayerData\\" + e.getPlayer().getUniqueId() + ".json");
+                FileWriter fileWriter = new FileWriter(KrassAlla.dataFolder + "/PlayerData/" + e.getPlayer().getUniqueId() + ".json");
                 fileWriter.write(jsonObject.toJSONString());
 
                 fileWriter.close();
