@@ -43,7 +43,7 @@ public class money implements CommandExecutor {
                                 p.sendMessage(KrassAlla.PREFIX + "Du hast nicht genügend Geld.");
                             }
                             for (Player receiver : Bukkit.getOnlinePlayers()) {
-                                if(!args[1].equalsIgnoreCase(p.getName()))
+                                if(!args[1].equalsIgnoreCase(receiver.getName()))
                                     continue;
                                 recuuid = receiver.getUniqueId().toString();
                                 break;
