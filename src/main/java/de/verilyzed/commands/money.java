@@ -21,7 +21,7 @@ public class money implements CommandExecutor {
         for (Player receiver : Bukkit.getOnlinePlayers()) {
             if (!Name.equalsIgnoreCase(receiver.getName()))
                 continue;
-             return receiver.getUniqueId().toString();
+            return receiver.getUniqueId().toString();
         }
         return "";
     }
@@ -42,6 +42,7 @@ public class money implements CommandExecutor {
         }
         return money;
     }
+
     private void setMoney(String p, long difference) {
         FileReader fr = null;
         long money = -1;
@@ -80,7 +81,7 @@ public class money implements CommandExecutor {
                             long moneyreceiver = getMoney(recuuid);
                             moneyreceiver += Integer.parseInt(args[2]);
                             money -= Integer.parseInt(args[2]);
-                            setMoney(p.getUniqueId().toString(),money);
+                            setMoney(p.getUniqueId().toString(), money);
                             setMoney(recuuid, moneyreceiver);
 
                         } catch (IllegalStateException | NumberFormatException e) {
