@@ -27,7 +27,15 @@ public class json implements CommandExecutor {
 
                 if (args.length > 0) {
                     if (args[0].equalsIgnoreCase("modify")) {
+                        if (args.length > 1) {
+                            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 
+                            }
+                        } else {
+                            p.sendMessage("§cSyntax: /json modify [Username]");
+                        }
+
+                        return true;
                     }
 
                     if (args[0].equalsIgnoreCase("read")) {
@@ -35,7 +43,7 @@ public class json implements CommandExecutor {
                             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                                 if (args[1].equalsIgnoreCase(onlinePlayer.getName())) {
                                     try {
-                                        FileReader fileReader = new FileReader(KrassAlla.dataFolder + "\\PlayerData\\" + onlinePlayer.getUniqueId() + ".json");
+                                        FileReader fileReader = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + onlinePlayer.getUniqueId() + ".json");
                                         Scanner scanner = new Scanner(fileReader);
 
                                         String jsonString = scanner.nextLine();
@@ -52,7 +60,7 @@ public class json implements CommandExecutor {
                                             }
                                         } else {
                                             for (Object key : json.keySet()) {
-                                                p.sendMessage(KrassAlla.PREFIX + "Key: " + key);
+                                                p.sendMessage(KrassAlla.PREFIX + key.toString().substring(0, 1).toUpperCase() + key.toString().substring(1).toLowerCase() + ": " + json.get(key));
                                             }
                                         }
 
@@ -61,8 +69,14 @@ public class json implements CommandExecutor {
                                     }
                                 }
                             }
+                        } else {
+                            p.sendMessage("§cSyntax: /json read [Username]");
                         }
+
+                        return true;
                     }
+                } else {
+                    p.sendMessage("§cSyntax: /json [modify|read]");
                 }
             }
 

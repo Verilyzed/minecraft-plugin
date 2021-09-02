@@ -33,7 +33,7 @@ public final class KrassAlla extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
 
-        Path path = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder().toString() + "\\PlayerData\\");
+        Path path = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder().toString() + "/PlayerData/");
 
         dataFolder = getDataFolder().toString();
 
