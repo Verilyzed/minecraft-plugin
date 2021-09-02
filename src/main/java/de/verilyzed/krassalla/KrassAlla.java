@@ -51,6 +51,7 @@ public final class KrassAlla extends JavaPlugin {
         getCommand("buy").setExecutor(new buy());
         getCommand("echo").setExecutor(new echo());
         getCommand("backpack").setExecutor(new backpack());
+        getCommand("money").setExecutor(new money());
         getCommand("json").setExecutor(new json());
     }
 

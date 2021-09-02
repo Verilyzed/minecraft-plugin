@@ -14,3 +14,5 @@ commands:
     usage: /backpack
   json:
     usage: /json
+  money:
+    usage: /money
