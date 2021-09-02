@@ -36,15 +36,16 @@ public class json implements CommandExecutor {
                                         if (jsonObject.containsKey(args[2])) {
                                             if (args.length > 3) {
                                                 jsonObject.put(args[2], args[3]);
-                                                p.sendMessage(KrassAlla.PREFIX + "Key " + args[2] + " successfully edited.");
+
+                                                if (FileManager.setJSONObject(onlinePlayer.getUniqueId(), jsonObject)) {
+                                                    p.sendMessage(KrassAlla.PREFIX + "Key " + args[2] + " successfully edited.");
+                                                }
                                             } else {
                                                 p.sendMessage(KrassAlla.PREFIX + "§cSyntax: /json modify [Username] [Key] [Value]");
                                             }
                                         } else {
                                             p.sendMessage(KrassAlla.PREFIX + "The key " + args[2] + " does not exist.");
                                         }
-
-
                                     } else {
                                         String keys = "";
                                         for (Object key : jsonObject.keySet()) {
