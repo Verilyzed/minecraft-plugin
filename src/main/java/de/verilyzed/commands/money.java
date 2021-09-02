@@ -31,7 +31,7 @@ public class money implements CommandExecutor {
                 if(args.length>0) {
                     if (args[0].equalsIgnoreCase("give") && args.length == 3) {
                         try {
-                            FileReader fr = new FileReader(KrassAlla.dataFolder + "\\PlayerData\\" + p.getUniqueId() + ".json");
+                            FileReader fr = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + p.getUniqueId() + ".json");
                             Scanner scanner  = new Scanner(fr);
                             JSONParser parser = new JSONParser();
                             JSONObject jsonObject = (JSONObject) parser.parse(scanner.nextLine());
@@ -48,7 +48,7 @@ public class money implements CommandExecutor {
                                 recuuid = receiver.getUniqueId().toString();
                                 break;
                             }
-                            FileReader frreceiver = new FileReader(KrassAlla.dataFolder + "\\PlayerData\\" + recuuid + ".json");
+                            FileReader frreceiver = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + recuuid + ".json");
                             Scanner scannerreceiver  = new Scanner(frreceiver);
                             JSONObject jsonObjectreceiver = (JSONObject) parser.parse(scanner.nextLine());
                             long moneyreceiver = (long)jsonObjectreceiver.get("money");
@@ -58,10 +58,10 @@ public class money implements CommandExecutor {
                             money -= Integer.parseInt(args[2]);
                             jsonObjectreceiver.put("money", moneyreceiver);
                             jsonObject.put("money", money);
-                            FileWriter fileWriter = new FileWriter(KrassAlla.dataFolder + "\\PlayerData\\" + p.getPlayer().getUniqueId() + ".json");
+                            FileWriter fileWriter = new FileWriter(KrassAlla.dataFolder + "/PlayerData/" + p.getPlayer().getUniqueId() + ".json");
                             fileWriter.write(jsonObject.toJSONString());
                             fileWriter.close();
-                            fileWriter = new FileWriter(KrassAlla.dataFolder + "\\PlayerData\\" + recuuid + ".json");
+                            fileWriter = new FileWriter(KrassAlla.dataFolder + "/PlayerData/" + recuuid + ".json");
                             fileWriter.write(jsonObjectreceiver.toJSONString());
                             fileWriter.close();
 
@@ -73,7 +73,7 @@ public class money implements CommandExecutor {
                  return true;
                 }
                 try {
-                    FileReader fr = new FileReader(KrassAlla.dataFolder + "\\PlayerData\\" + p.getUniqueId() + ".json");
+                    FileReader fr = new FileReader(KrassAlla.dataFolder + "/PlayerData/" + p.getUniqueId() + ".json");
                     Scanner scanner  = new Scanner(fr);
                     JSONParser parser = new JSONParser();
                     JSONObject jsonObject = (JSONObject) parser.parse(scanner.nextLine());
