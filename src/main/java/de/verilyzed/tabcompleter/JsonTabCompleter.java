@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Json_TabCompleter implements TabCompleter {
+public class JsonTabCompleter implements TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
@@ -24,17 +24,21 @@ public class Json_TabCompleter implements TabCompleter {
 
             if (args.length == 1) {
                 for (String tab : tabList) {
-                    if (tab.contains(args[0])) {
+                    if (tab.toLowerCase().contains(args[0].toLowerCase())) {
                         tabSender.add(tab);
                     }
                 }
 
             } else if (args.length == 2) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (p.getName().contains(args[1])) {
+                    if (p.getName().toLowerCase().contains(args[1].toLowerCase())) {
                         tabSender.add(p.getName());
                     }
                 }
+            } else if (args.length == 3) {
+                tabSender.add("<key>");
+            } else if (args.length == 4 && args[0].equalsIgnoreCase("modify")) {
+                tabSender.add("<value>");
             }
 
             if (args.length == 0) {

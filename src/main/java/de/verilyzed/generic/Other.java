@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Other {
@@ -14,5 +16,15 @@ public class Other {
             return receiver.getUniqueId();
         }
     return UUID.fromString("");
+    }
+
+    public static List<String> getOnlinePlayerNames() {
+        List<String> names = new ArrayList<>();
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            names.add(p.getName());
+        }
+
+        return names;
     }
 }

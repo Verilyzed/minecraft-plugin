@@ -4,7 +4,8 @@ import de.verilyzed.commands.*;
 import de.verilyzed.events.onInventoryCloseEvent;
 import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
-import de.verilyzed.tabcompleter.Json_TabCompleter;
+import de.verilyzed.tabcompleter.JsonTabCompleter;
+import de.verilyzed.tabcompleter.MoneyTabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -59,7 +60,8 @@ public final class KrassAlla extends JavaPlugin {
     }
 
     public void enableTabCompleter() {
-        getCommand("json").setTabCompleter(new Json_TabCompleter());
+        getCommand("json").setTabCompleter(new JsonTabCompleter());
+        getCommand("money").setTabCompleter(new MoneyTabCompleter());
     }
 
     public void enableListener() {
