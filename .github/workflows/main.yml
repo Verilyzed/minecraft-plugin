@@ -27,4 +27,6 @@ jobs:
       - name: action-maven
         uses: tbrtje/action-maven-cli@master
         with:
-          args: "clean package"
+          args: "clean package deploy"
+        env:
+            GS_CONFIG: ${{ secrets.MAVEN }}
