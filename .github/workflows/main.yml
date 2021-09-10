@@ -35,7 +35,8 @@ jobs:
         uses: siva1024/scp-deployer@v1.0
         with:
           # ssh remote host
-          host: verilyzed.de
+          username: "colin_server"
+          host: "verilyzed.de"
           key: ${{ secrets.SERVER }}
           source: "/github/workspace/target/*.jar"
           # destination to download on server
