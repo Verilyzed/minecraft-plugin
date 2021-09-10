@@ -27,11 +27,9 @@ jobs:
       - name: Setup Maven
         # You may pin to the exact commit or the version.
         # uses: stCarolas/setup-maven@7060d72b50fbf2389a16d6f66a9c7d4d9ece5d36
-        uses: stCarolas/setup-maven@v4.2
-      # Runs a single command using the runners shell
       - name: action-maven
         # You may pin to the exact commit or the version.
         # uses: comchangs/action-maven@54db702e085ac767dad94c87e84499afb9d77162
-        uses: comchangs/action-maven@v0.4-beta
+        uses: tbrtje/action-maven-cli@latest
         with:
           args: "clean package"
