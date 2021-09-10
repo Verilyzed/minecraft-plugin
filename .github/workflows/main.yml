@@ -31,4 +31,4 @@ jobs:
         env:
             USERNAME: ${{ secrets.USERNAME }}
             OWNER: ${{ secrets.USERNAME }}
-            TOKEN: ${{ secrets.TOKEN }}
+            TOKEN: ${{ secrets.GITHUB_TOKEN }}
