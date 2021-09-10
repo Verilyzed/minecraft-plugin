@@ -62,7 +62,13 @@
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
     </repositories>
-
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Package</name>
+            <url>https://maven.pkg.github.com/Verilyzed/minecraft-plugin</url>
+        </repository>
+    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>io.papermc.paper</groupId>
