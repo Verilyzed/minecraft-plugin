@@ -29,4 +29,6 @@ jobs:
         with:
           args: "clean package deploy"
         env:
-            GS_CONFIG: ${{ secrets.MAVEN }}
+            USERNAME: ${{ secrets.USERNAME }}
+            OWNER: ${{ secrets.USERNAME }}
+            TOKEN: ${{ secrets.TOKEN }}
