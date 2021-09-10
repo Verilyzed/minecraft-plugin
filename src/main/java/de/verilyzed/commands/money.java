@@ -3,20 +3,13 @@ package de.verilyzed.commands;
 import de.verilyzed.generic.FileManager;
 import de.verilyzed.generic.Other;
 import de.verilyzed.krassalla.KrassAlla;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
 import java.util.UUID;
 
 public class money implements CommandExecutor {
@@ -53,23 +46,26 @@ public class money implements CommandExecutor {
                             setMoney(receiverJSON, moneyReceiver, uuidReceiver);
                             return true;
                         case "add":
-                            if (args.length != 2) break;
+                            if (args.length != 2)  {
+                                p.sendMessage("§sSyntax: /money add [Betrag]");
+                                return true;
+                            }
                             moneySender += (long) Integer.parseInt(args[1]);
                             setMoney(senderJSON, moneySender, uuidSender);
                             p.sendMessage("Du Admin hast dir " + args[1] + " Eugen gegeben. Frech von dir.");
                             return true;
                         default:
-                            p.sendMessage("Falscher Befehl, unterstützt wird:");
+                            p.sendMessage("§sFalscher Befehl, unterstützt wird:");
                             p.sendMessage("/money");
                             p.sendMessage("/money give [empfänger] [betrag]");
+                            p.sendMessage("/money add [betrag]");
+                            return true;
                     }
-                    return true;
                 }
                 p.sendMessage(KrassAlla.PREFIX + "Du hast " + moneySender + " Geld");
                 return true;
             }
         }
-
         return false;
     }
 }
