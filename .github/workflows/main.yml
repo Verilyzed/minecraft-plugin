@@ -25,7 +25,7 @@ jobs:
       - name: action-maven
         uses: tbrtje/action-maven-cli@master
         with:
-          args: "clean package deploy"
-          username: ${{ secrets.USERNAME }}
-          owner: ${{ secrets.USERNAME }}
+          args: "clean package deploy -e"
+          username: "Verilyzed"
+          owner: "Verilyzed"
           token: ${{ secrets.GITHUB_TOKEN }}
