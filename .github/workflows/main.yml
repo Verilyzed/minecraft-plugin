@@ -29,3 +29,14 @@ jobs:
           username: "Verilyzed"
           owner: "Verilyzed"
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: scp-deployer
+        # You may pin to the exact commit or the version.
+        # uses: siva1024/scp-deployer@595af961c23bfad4cc7c1bcdfe9b57fb840e7cb9
+        uses: siva1024/scp-deployer@v1.0
+        with:
+          # ssh remote host
+          host: verilyzed.de
+          key: ${{ secrets.SERVER }}
+          source: "/github/workspace/target/*.jar"
+          # destination to download on server
+          target: "/home/colin_server/minecraft_server/plugins/"
