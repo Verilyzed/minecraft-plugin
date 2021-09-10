@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.verilyzed</groupId>
-    <artifactId>KrassAlla</artifactId>
+    <artifactId>minecraft-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>KrassAlla</name>
+    <name>minecraft-plugin</name>
 
     <properties>
         <java.version>1.8</java.version>
