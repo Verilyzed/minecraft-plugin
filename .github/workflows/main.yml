@@ -25,6 +25,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: action-maven
-        uses: tbrtje/action-maven-cli@adoptopenjdk16
+        uses: tbrtje/action-maven-cli@16.0
         with:
           args: "clean package"
