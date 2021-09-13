@@ -37,6 +37,6 @@ jobs:
           deployment_user: "colin_server"
           destination_host: "verilyzed.de"
           deployment_key: ${{ secrets.SERVER }}
-          source_dir: "/github/workspace/target/"
+          source_dir: "/github/workspace/target/minecraft-plugin-1.0-SNAPSHOT.jar"
           # destination to download on server
           destination_path: "/home/colin_server/minecraft_server/plugins/"
