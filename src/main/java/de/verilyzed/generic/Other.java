@@ -27,4 +27,14 @@ public class Other {
 
         return names;
     }
+
+    public static List<String> getOnlinePlayerNames(String str) {
+        List<String> names = new ArrayList<>();
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            names.add(str + p.getName());
+        }
+
+        return names;
+    }
 }
