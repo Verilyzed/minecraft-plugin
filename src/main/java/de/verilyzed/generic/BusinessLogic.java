@@ -7,8 +7,7 @@ import java.util.UUID;
 
 public class BusinessLogic {
     private static Statement stm;
-
-    public static void main(String[] args ) throws SQLException {
+    public BusinessLogic() throws SQLException {
         Connection con = createConnection();
         stm = con.createStatement();
     }
