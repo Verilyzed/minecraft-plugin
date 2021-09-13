@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 
 public final class KrassAlla extends JavaPlugin {
 
@@ -52,7 +51,7 @@ public final class KrassAlla extends JavaPlugin {
     }
 
     public void enableCommands() {
-        Objects.requireNonNull(getCommand("test")).setExecutor(new test());
+        getCommand("test").setExecutor(new test());
         getCommand("buy").setExecutor(new buy());
         getCommand("echo").setExecutor(new echo());
         getCommand("backpack").setExecutor(new backpack());

@@ -7,14 +7,9 @@ import java.util.UUID;
 
 public class BusinessLogic {
     private static Statement stm;
-
-    public void Cool() {
-        try {
-            Connection con = createConnection();
-            stm = con.createStatement();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public BusinessLogic() throws SQLException {
+        Connection con = createConnection();
+        stm = con.createStatement();
     }
 
     private static Connection createConnection() {

@@ -25,8 +25,6 @@ public class onPlayerJoinEvent implements Listener {
             e.setJoinMessage("");
         }
         BusinessLogic logic = new BusinessLogic();
-        logic.Cool();
-
         Path jsonpath = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder().toString() + "/PlayerData/" + e.getPlayer().getUniqueId() + ".json");
         JSONObject json = new JSONObject();
         json.put("name", e.getPlayer().getName());

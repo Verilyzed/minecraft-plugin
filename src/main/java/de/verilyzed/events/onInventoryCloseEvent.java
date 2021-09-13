@@ -15,10 +15,8 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Scanner;
 
-@SuppressWarnings("unchecked")
 public class onInventoryCloseEvent implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
@@ -29,30 +27,26 @@ public class onInventoryCloseEvent implements Listener {
 
             JSONObject jsonObject = FileManager.getJSONObject(e.getPlayer().getUniqueId());
 
-            Objects.requireNonNull(jsonObject).remove("backpack");
+            jsonObject.remove("backpack");
 
             JSONArray jsonArray = new JSONArray();
 
             for (int i = 0; i < inv.getSize(); i++) {
-                getItemFromInventoryAndAddToSuggestions(inv, jsonArray, i);
+                if (inv.getItem(i) != null) {
+                    ItemStack item = inv.getItem(i);
+
+                    JSONArray itemArray = new JSONArray();
+                    itemArray.add(i);
+                    itemArray.add(item.getType().toString());
+                    itemArray.add(item.getAmount());
+
+                    jsonArray.add(itemArray);
+                }
             }
 
             jsonObject.put("backpack", jsonArray);
 
             FileManager.setJSONObject(e.getPlayer().getUniqueId(), jsonObject);
-        }
-    }
-
-    private void getItemFromInventoryAndAddToSuggestions(Inventory inv, JSONArray jsonArray, int i) {
-        if (inv.getItem(i) != null) {
-            ItemStack item = inv.getItem(i);
-
-            JSONArray itemArray = new JSONArray();
-            itemArray.add(i);
-            itemArray.add(Objects.requireNonNull(item).getType().toString());
-            itemArray.add(item.getAmount());
-
-            jsonArray.add(itemArray);
         }
     }
 }
