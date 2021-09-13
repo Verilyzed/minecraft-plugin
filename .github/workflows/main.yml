@@ -1,0 +1,29 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '16'
+          cache: 'maven'
+      - name: build package
+        run: mvn clean package
+#      - name: action-maven
+#        uses: tbrtje/action-maven-cli@master
+#        with:
+#          args: "deploy -e"
+#          username: "Verilyzed"
+#          owner: "Verilyzed"
+#          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: upload to server
+        run: "echo $(base64 -d ${{ secrets.SERVER }} > .ssh/id_rsa); scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null target/*.jar colin_user@verilyzed.de:/home/colin_server/plugins/"
+          

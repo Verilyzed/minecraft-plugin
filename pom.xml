@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.verilyzed</groupId>
-    <artifactId>KrassAlla</artifactId>
+    <artifactId>minecraft-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>KrassAlla</name>
+    <name>minecraft-plugin</name>
 
     <properties>
         <java.version>1.8</java.version>
@@ -62,7 +62,13 @@
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
     </repositories>
-
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Package</name>
+            <url>https://maven.pkg.github.com/Verilyzed/minecraft-plugin</url>
+        </repository>
+    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>io.papermc.paper</groupId>
