@@ -14,7 +14,7 @@ public class BusinessLogic {
     }
 
     private static Connection createConnection() {
-        String url = "jdbc:mysql://52.232.13.152:3306/minecraft";
+        String url = "jdbc:mysql://52.232.13.152:443/minecraft";
         String user = "root";
         String pass = "password";
         Connection con = null;
