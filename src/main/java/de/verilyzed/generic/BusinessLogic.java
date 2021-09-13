@@ -27,7 +27,7 @@ public class BusinessLogic {
         }
         return con;
     }
-    public static boolean checkUserExistsInDB(UUID uuid) throws SQLException {
+    public boolean checkUserExistsInDB(UUID uuid) throws SQLException {
         ResultSet rs = stm.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = "+ uuid + ";");
         if(rs.getInt("c") == 0)
             return false;
@@ -35,7 +35,7 @@ public class BusinessLogic {
 
     }
     // Below is legacy code to be compatible with the deprecated JSON-File Storage-Backend we used before.
-    public static JSONObject getJSONObject(UUID uuid) {
+    public JSONObject getJSONObject(UUID uuid) {
         try {
             String abfrage = "SELECT * FROM users WHERE uuid="+uuid+";";
             ResultSet rs = stm.executeQuery(abfrage);
@@ -50,7 +50,7 @@ public class BusinessLogic {
 
         return null;
     }
-    public static boolean setJSONObject(UUID uuid, JSONObject jsonObject) {
+    public boolean setJSONObject(UUID uuid, JSONObject jsonObject) {
         try {
             String abfrage = "UPDATE users SET money="+ jsonObject.get("money") + ", backpack=" + jsonObject.get("backpack") + "WHERE uuid=" + uuid + ";";
             stm.executeQuery(abfrage);
@@ -61,7 +61,7 @@ public class BusinessLogic {
 
         return false;
     }
-    public static void createUserinDatabase(UUID uuid, JSONObject jsonObject) {
+    public void createUserinDatabase(UUID uuid, JSONObject jsonObject) {
         try {
             String abfrage = "INSERT INTO users (money, backpack, uuid) VALUES (" + jsonObject.get("money") + ", " + jsonObject.get("backpack") + ", " + uuid + ");";
             stm.executeQuery(abfrage);
@@ -69,7 +69,7 @@ public class BusinessLogic {
             e.printStackTrace();
         }
     }
-    public static JSONArray mapResultSet(ResultSet rs) throws SQLException
+    public JSONArray mapResultSet(ResultSet rs) throws SQLException
     {
         JSONArray jArray = new JSONArray();
         JSONObject jsonObject = null;

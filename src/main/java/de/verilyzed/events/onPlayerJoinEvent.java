@@ -24,7 +24,7 @@ public class onPlayerJoinEvent implements Listener {
             p.sendMessage("§8[§6+§8] §f" + e.getPlayer().getName());
             e.setJoinMessage("");
         }
-
+        BusinessLogic logic = new BusinessLogic();
         Path jsonpath = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder().toString() + "/PlayerData/" + e.getPlayer().getUniqueId() + ".json");
         JSONObject json = new JSONObject();
         json.put("name", e.getPlayer().getName());
@@ -41,8 +41,8 @@ public class onPlayerJoinEvent implements Listener {
 
         } else {
             KrassAlla.log("File already exists.");
-            if (BusinessLogic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
-                BusinessLogic.createUserinDatabase(e.getPlayer().getUniqueId(), json);
+            if (logic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
+                logic.createUserinDatabase(e.getPlayer().getUniqueId(), json);
         }
     }
 }
