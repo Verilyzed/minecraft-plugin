@@ -9,6 +9,7 @@ public class BusinessLogic {
     private static Statement stm;
     public BusinessLogic() throws SQLException {
         Connection con = createConnection();
+        assert con != null;
         stm = con.createStatement();
     }
 
@@ -16,15 +17,15 @@ public class BusinessLogic {
         String url = "jdbc:mysql://52.232.13.152:443/minecraft";
         String user = "root";
         String pass = "password";
-        Connection con = null;
         try {
             // Verbindung aufbauen
-            con = DriverManager.getConnection(url, user, pass);
+            Connection con = DriverManager.getConnection(url, user, pass);
             System.out.println("Verbindung erfolgreich hergestellt");
+            return con;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return con;
+            return null;
     }
     public boolean checkUserExistsInDB(UUID uuid) throws SQLException {
         ResultSet rs = stm.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = "+ uuid + ";");
