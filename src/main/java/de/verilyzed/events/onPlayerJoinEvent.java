@@ -41,8 +41,8 @@ public class onPlayerJoinEvent implements Listener {
 
         } else {
             KrassAlla.log("File already exists.");
-            if (logic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
-                logic.createUserinDatabase(e.getPlayer().getUniqueId(), json);
+//            if (logic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
+//                logic.createUserinDatabase(e.getPlayer().getUniqueId(), json);
         }
     }
 }
