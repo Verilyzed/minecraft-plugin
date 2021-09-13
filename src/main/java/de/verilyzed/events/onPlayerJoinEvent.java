@@ -1,5 +1,6 @@
 package de.verilyzed.events;
 
+import de.verilyzed.generic.BusinessLogic;
 import de.verilyzed.generic.FileManager;
 import de.verilyzed.krassalla.KrassAlla;
 import org.bukkit.Bukkit;
@@ -41,6 +42,7 @@ public class onPlayerJoinEvent implements Listener {
             json.put("backpack", backpack);
 
             FileManager.setJSONObject(e.getPlayer().getUniqueId(), json);
+            BusinessLogic.createUserinDatabase(e.getPlayer().getUniqueId(), json);
         } else {
             KrassAlla.log("File already exists.");
         }
