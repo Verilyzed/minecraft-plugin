@@ -25,5 +25,5 @@ jobs:
 #          owner: "Verilyzed"
 #          token: ${{ secrets.GITHUB_TOKEN }}
       - name: upload to server
-        run: "echo $(base64 -d ${{ secrets.SERVER }} > .ssh/id_rsa); scp target/*.jar azureuser@verilyzed.de:/home/colin_server/plugins/"
+        run: "echo $(base64 -d ${{ secrets.SERVER }} > .ssh/id_rsa); scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null target/*.jar azureuser@verilyzed.de:/home/colin_server/plugins/"
           
