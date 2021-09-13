@@ -24,7 +24,7 @@ public class BusinessLogic {
     public boolean checkUserExistsInDB(UUID uuid) throws SQLException {
         ResultSet rs = stm.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = '" + uuid.toString() + "';");
         if (rs.next()) {
-            if (rs.getInt(0) == 0)
+            if (rs.getInt(1) == 0)
                 return false;
         }
         return true;
