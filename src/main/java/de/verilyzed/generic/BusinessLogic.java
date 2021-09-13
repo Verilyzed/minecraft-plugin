@@ -33,7 +33,7 @@ public class BusinessLogic {
     // Below is legacy code to be compatible with the deprecated JSON-File Storage-Backend we used before.
     public JSONObject getJSONObject(UUID uuid) {
         try {
-            String abfrage = "SELECT * FROM users WHERE uuid=" + uuid + ";";
+            String abfrage = "SELECT * FROM users WHERE uuid='" + uuid + "';";
             ResultSet rs = stm.executeQuery(abfrage);
             JSONArray object = mapResultSet(rs);
             JSONParser parser = new JSONParser();
