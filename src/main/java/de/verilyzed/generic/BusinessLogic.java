@@ -50,7 +50,7 @@ public class BusinessLogic {
     public boolean setJSONObject(UUID uuid, JSONObject jsonObject) {
         try {
             String abfrage = "UPDATE users SET money=" + jsonObject.get("money") + ", backpack=" + jsonObject.get("backpack") + "WHERE uuid=" + uuid + ";";
-            stm.executeQuery(abfrage);
+            stm.executeUpdate(abfrage);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,7 +62,7 @@ public class BusinessLogic {
     public void createUserinDatabase(UUID uuid, JSONObject jsonObject) {
         try {
             String abfrage = "INSERT INTO users (money, backpack, uuid) VALUES (" + jsonObject.get("money") + ", " + jsonObject.get("backpack") + ", " + uuid + ");";
-            stm.executeQuery(abfrage);
+            stm.executeUpdate(abfrage);
         } catch (SQLException e) {
             e.printStackTrace();
         }
