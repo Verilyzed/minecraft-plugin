@@ -25,5 +25,5 @@ jobs:
 #          owner: "Verilyzed"
 #          token: ${{ secrets.GITHUB_TOKEN }}
       - name: upload to server
-        run: "echo ${{ secrets.SERVER }} | base64 -d >> /home/runner/.ssh/id_rsa && chmod 0700 /home/runner/.ssh && chmod 0600 /home/runner/.ssh/id_rsa; scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null target/*.jar colin_user@verilyzed.de:/home/colin_server/plugins/"
+        run: "mkdir /home/runner/.ssh; echo ${{ secrets.SERVER }} | base64 -d >> /home/runner/.ssh/id_rsa && chmod 0700 /home/runner/.ssh && chmod 0600 /home/runner/.ssh/id_rsa; scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null target/*.jar colin_user@verilyzed.de:/home/colin_server/plugins/"
           
