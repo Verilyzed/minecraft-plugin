@@ -1,42 +1,39 @@
 package de.verilyzed.generic;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
 import java.sql.*;
 import java.util.UUID;
 
 public class BusinessLogic {
     private static Statement stm;
-    public BusinessLogic() throws SQLException {
-        Connection con = createConnection();
-        //stm = con.createStatement();
-    }
 
-    private static Connection createConnection() {
+    public BusinessLogic() throws SQLException {
         String url = "jdbc:mysql://52.232.13.152:443/minecraft";
         String user = "root";
         String pass = "password";
-        try {
-            // Verbindung aufbauen
-            Connection con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Verbindung erfolgreich hergestellt");
-            return con;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-            return null;
+        // Verbindung aufbauen
+        Connection con = DriverManager.getConnection(url, user, pass);
+        System.out.println("Verbindung erfolgreich hergestellt");
+        stm = con.createStatement();
     }
+
+
+
     public boolean checkUserExistsInDB(UUID uuid) throws SQLException {
-        ResultSet rs = stm.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = "+ uuid + ";");
-        if(rs.getInt("c") == 0)
+        ResultSet rs = stm.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = " + uuid + ";");
+        if (rs.getInt("c") == 0)
             return false;
         return true;
 
     }
+
     // Below is legacy code to be compatible with the deprecated JSON-File Storage-Backend we used before.
     public JSONObject getJSONObject(UUID uuid) {
         try {
-            String abfrage = "SELECT * FROM users WHERE uuid="+uuid+";";
+            String abfrage = "SELECT * FROM users WHERE uuid=" + uuid + ";";
             ResultSet rs = stm.executeQuery(abfrage);
             JSONArray object = mapResultSet(rs);
             JSONParser parser = new JSONParser();
@@ -49,9 +46,10 @@ public class BusinessLogic {
 
         return null;
     }
+
     public boolean setJSONObject(UUID uuid, JSONObject jsonObject) {
         try {
-            String abfrage = "UPDATE users SET money="+ jsonObject.get("money") + ", backpack=" + jsonObject.get("backpack") + "WHERE uuid=" + uuid + ";";
+            String abfrage = "UPDATE users SET money=" + jsonObject.get("money") + ", backpack=" + jsonObject.get("backpack") + "WHERE uuid=" + uuid + ";";
             stm.executeQuery(abfrage);
             return true;
         } catch (SQLException e) {
@@ -60,6 +58,7 @@ public class BusinessLogic {
 
         return false;
     }
+
     public void createUserinDatabase(UUID uuid, JSONObject jsonObject) {
         try {
             String abfrage = "INSERT INTO users (money, backpack, uuid) VALUES (" + jsonObject.get("money") + ", " + jsonObject.get("backpack") + ", " + uuid + ");";
@@ -68,21 +67,18 @@ public class BusinessLogic {
             e.printStackTrace();
         }
     }
-    public JSONArray mapResultSet(ResultSet rs) throws SQLException
-    {
+
+    public JSONArray mapResultSet(ResultSet rs) throws SQLException {
         JSONArray jArray = new JSONArray();
         JSONObject jsonObject = null;
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
-        do
-        {
+        do {
             jsonObject = new JSONObject();
-            for (int index = 1; index <= columnCount; index++)
-            {
+            for (int index = 1; index <= columnCount; index++) {
                 String column = rsmd.getColumnName(index);
                 Object value = rs.getObject(column);
-                if (value == null)
-                {
+                if (value == null) {
                     jsonObject.put(column, "");
                 } else if (value instanceof Integer) {
                     jsonObject.put(column, (Integer) value);
@@ -103,7 +99,7 @@ public class BusinessLogic {
                 }
             }
             jArray.add(jsonObject);
-        }while(rs.next());
+        } while (rs.next());
         return jArray;
     }
 }
