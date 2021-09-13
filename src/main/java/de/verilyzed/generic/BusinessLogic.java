@@ -1,5 +1,6 @@
 package de.verilyzed.generic;
 
+import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -59,9 +60,9 @@ public class BusinessLogic {
         return false;
     }
 
-    public void createUserinDatabase(UUID uuid, JSONObject jsonObject) {
+    public void createUserinDatabase(Player p, JSONObject jsonObject) {
         try {
-            String abfrage = "INSERT INTO users (money, backpack, uuid) VALUES (" + jsonObject.get("money") + ", '" + jsonObject.get("backpack") + "', '" + uuid.toString() + "');";
+            String abfrage = "INSERT INTO users (money, backpack, uuid, name) VALUES (" + jsonObject.get("money") + ", '" + jsonObject.get("backpack") + "', '" + p.getUniqueId().toString() + "', '" + p.getName() + "');";
             stm.executeUpdate(abfrage);
         } catch (SQLException e) {
             e.printStackTrace();
