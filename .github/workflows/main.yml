@@ -17,10 +17,10 @@ jobs:
           cache: 'maven'
       - name: build package
         run: mvn clean package
-      - name: action-maven
-        uses: tbrtje/action-maven-cli@master
-        with:
-          args: "deploy -e"
-          username: "Verilyzed"
-          owner: "Verilyzed"
-          token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: action-maven
+#        uses: tbrtje/action-maven-cli@master
+#        with:
+#          args: "deploy -e"
+#          username: "Verilyzed"
+#          owner: "Verilyzed"
+#          token: ${{ secrets.GITHUB_TOKEN }}
