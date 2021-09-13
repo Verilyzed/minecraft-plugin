@@ -9,7 +9,7 @@ public class BusinessLogic {
     private static Statement stm;
     public BusinessLogic() throws SQLException {
         Connection con = createConnection();
-        stm = con.createStatement();
+        //stm = con.createStatement();
     }
 
     private static Connection createConnection() {
