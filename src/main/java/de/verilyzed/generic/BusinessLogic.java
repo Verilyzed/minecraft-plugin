@@ -27,7 +27,13 @@ public class BusinessLogic {
         }
         return con;
     }
+    public static boolean checkUserExistsInDB(UUID uuid) throws SQLException {
+        ResultSet rs = stm.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = "+ uuid + ";");
+        if(rs.getInt("c") == 0)
+            return false;
+        return true;
 
+    }
     // Below is legacy code to be compatible with the deprecated JSON-File Storage-Backend we used before.
     public static JSONObject getJSONObject(UUID uuid) {
         try {
