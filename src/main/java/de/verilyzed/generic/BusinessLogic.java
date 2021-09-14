@@ -11,6 +11,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.UUID;
 
+@SuppressWarnings("unchecked")
 public class BusinessLogic {
 
     public static int getMoney(String name) {
@@ -69,8 +70,7 @@ public class BusinessLogic {
     public boolean createUserinDatabase(Player p, JSONObject jsonObject) {
         DatabaseHandler db = new DatabaseHandler();
         String abfrage = "INSERT INTO users (money, backpack, uuid, name) VALUES (" + jsonObject.get("money") + ", '" + jsonObject.get("backpack") + "', '" + p.getUniqueId().toString() + "', '" + p.getName() + "');";
-        boolean res = db.executeUpdate(abfrage);
-        return res;
+        return db.executeUpdate(abfrage);
     }
 
     // Below is legacy code to be compatible with the deprecated JSON-File Storage-Backend we used before.
@@ -80,15 +80,13 @@ public class BusinessLogic {
         ResultSet rs = db.executeQuery(abfrage);
         JSONArray object = mapResultSet(rs);
         JSONParser parser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) object.get(1);
-        return jsonObject;
+        return (JSONObject) object.get(1);
     }
 
     public boolean setJSONObject(UUID uuid, JSONObject jsonObject) {
         DatabaseHandler db = new DatabaseHandler();
         String abfrage = "UPDATE users SET money=" + jsonObject.get("money") + ", backpack=" + jsonObject.get("backpack") + "WHERE uuid=" + uuid.toString() + ";";
-        boolean ret = db.executeUpdate(abfrage);
-        return ret;
+        return db.executeUpdate(abfrage);
     }
 
 
