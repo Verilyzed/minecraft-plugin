@@ -14,19 +14,19 @@ import org.json.simple.JSONObject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 
 @SuppressWarnings("unchecked")
 public class onPlayerJoinEvent implements Listener {
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
+    @SuppressWarnings("deprecation")
+    public void onPlayerJoin(PlayerJoinEvent e) {
         //Welcome message
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.sendMessage("§8[§6+§8] §f" + e.getPlayer().getName());
             e.setJoinMessage("");
         }
         BusinessLogic logic = new BusinessLogic();
-        Path jsonpath = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder().toString() + "/PlayerData/" + e.getPlayer().getUniqueId() + ".json");
+        Path jsonpath = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder() + "/PlayerData/" + e.getPlayer().getUniqueId() + ".json");
         JSONObject json = new JSONObject();
         json.put("name", e.getPlayer().getName());
         json.put("money", 100);

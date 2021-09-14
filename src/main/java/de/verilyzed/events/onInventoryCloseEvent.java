@@ -11,9 +11,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.Objects;
 
-@SuppressWarnings({"unchecked", "deprecation"})
+@SuppressWarnings("deprecation")
 public class onInventoryCloseEvent implements Listener {
     @EventHandler
+    @SuppressWarnings("unchecked")
     public void onInventoryClose(InventoryCloseEvent e) {
         if (e.getView().getTitle().equalsIgnoreCase("Backpack")) {
             e.getPlayer().sendMessage(KrassAlla.PREFIX + "Closing Backpack.");
