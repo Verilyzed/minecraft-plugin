@@ -9,13 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Scanner;
+import java.util.Objects;
 
+@SuppressWarnings({"unchecked", "StringConcatenationInLoop"})
 public class json implements CommandExecutor {
 
     @Override
@@ -33,7 +30,7 @@ public class json implements CommandExecutor {
                                     JSONObject jsonObject = FileManager.getJSONObject(onlinePlayer.getUniqueId());
 
                                     if (args.length > 2) {
-                                        if (jsonObject.containsKey(args[2])) {
+                                        if (Objects.requireNonNull(jsonObject).containsKey(args[2])) {
                                             if (args.length > 3) {
                                                 jsonObject.put(args[2], args[3]);
 
@@ -48,7 +45,7 @@ public class json implements CommandExecutor {
                                         }
                                     } else {
                                         String keys = "";
-                                        for (Object key : jsonObject.keySet()) {
+                                        for (Object key : Objects.requireNonNull(jsonObject).keySet()) {
                                             keys += key.toString() + ",";
                                         }
                                         keys = keys.substring(0, keys.length() - 1);
@@ -72,13 +69,13 @@ public class json implements CommandExecutor {
                                     JSONObject json = FileManager.getJSONObject(onlinePlayer.getUniqueId());
 
                                     if (args.length > 2) {
-                                        if (json.containsKey(args[2])) {
+                                        if (Objects.requireNonNull(json).containsKey(args[2])) {
                                             p.sendMessage(KrassAlla.PREFIX + args[2].substring(0, 1).toUpperCase() + args[2].substring(1).toLowerCase() + ": " + json.get(args[2]));
                                         } else {
                                             p.sendMessage(KrassAlla.PREFIX + "The key " + args[2] + " does not exist.");
                                         }
                                     } else {
-                                        for (Object key : json.keySet()) {
+                                        for (Object key : Objects.requireNonNull(json).keySet()) {
                                             p.sendMessage(KrassAlla.PREFIX + key.toString().substring(0, 1).toUpperCase() + key.toString().substring(1).toLowerCase() + ": " + json.get(key));
                                         }
                                     }

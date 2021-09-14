@@ -1,7 +1,6 @@
 package de.verilyzed.generic;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,9 +34,7 @@ public class GenericTabCompleter {
                     if (tabs.length > 1) {
                         for (int r = 0; r < tabs.length; r++) {
                             if (r != tabs.length - 1) {
-                                if (args[r].equals(tabs[r]) || tabs[r].equals("<Player>")) {
-
-                                } else {
+                                if (!(args[r].equals(tabs[r]) || tabs[r].equals("<Player>"))) {
                                     break outer;
                                 }
                             }

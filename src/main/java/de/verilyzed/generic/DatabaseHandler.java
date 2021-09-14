@@ -16,7 +16,7 @@ public class DatabaseHandler {
     private void createConnection() {
         try {
             // Verbindung aufbauen
-            Connection con = DriverManager.getConnection(url, user, pass);
+            con = DriverManager.getConnection(url, user, pass);
             System.out.println("Verbindung erfolgreich hergestellt");
             this.stm = con.createStatement();
         } catch (SQLException e) {

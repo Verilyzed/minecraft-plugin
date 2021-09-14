@@ -11,7 +11,7 @@ public class echo implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (sender instanceof Player) {
-            Player p = ((Player) sender).getPlayer();
+            Player p = (Player) sender;
             if (command.getName().equalsIgnoreCase("echo")) {
                 if (strings.length != 0){
                     for (String string : strings) {

@@ -9,14 +9,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import java.util.Objects;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
-
+@SuppressWarnings("unchecked")
 public class onInventoryCloseEvent implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
@@ -27,7 +22,7 @@ public class onInventoryCloseEvent implements Listener {
 
             JSONObject jsonObject = FileManager.getJSONObject(e.getPlayer().getUniqueId());
 
-            jsonObject.remove("backpack");
+            Objects.requireNonNull(jsonObject).remove("backpack");
 
             JSONArray jsonArray = new JSONArray();
 
@@ -37,7 +32,7 @@ public class onInventoryCloseEvent implements Listener {
 
                     JSONArray itemArray = new JSONArray();
                     itemArray.add(i);
-                    itemArray.add(item.getType().toString());
+                    itemArray.add(Objects.requireNonNull(item).getType().toString());
                     itemArray.add(item.getAmount());
 
                     jsonArray.add(itemArray);

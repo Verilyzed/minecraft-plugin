@@ -8,22 +8,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Scanner;
+import java.util.Objects;
 
+@SuppressWarnings("deprecation")
 public class backpack implements CommandExecutor {
 
     @Override
@@ -39,7 +33,7 @@ public class backpack implements CommandExecutor {
 
                 JSONObject jsonObject = FileManager.getJSONObject(p.getUniqueId());
 
-                JSONArray jsonArray = (JSONArray) jsonObject.get("backpack");
+                JSONArray jsonArray = (JSONArray) Objects.requireNonNull(jsonObject).get("backpack");
 
                 for (Object object : jsonArray) {
                     JSONArray itemArray = (JSONArray) object;

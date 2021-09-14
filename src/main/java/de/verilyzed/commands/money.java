@@ -45,7 +45,7 @@ public class money implements CommandExecutor {
                         }
                         UUID uuidReceiver = Other.getPlayerUUID(args[1]);
                         JSONObject receiverJSON = FileManager.getJSONObject(uuidReceiver);
-                        long moneyReceiver = (long) receiverJSON.get("money");
+                        long moneyReceiver = (long) Objects.requireNonNull(receiverJSON).get("money");
                         moneyReceiver += Integer.parseInt(args[2]);
                         moneySender -= Integer.parseInt(args[2]);
                         setMoney(senderJSON, moneySender, uuidSender);
@@ -56,7 +56,7 @@ public class money implements CommandExecutor {
                             p.sendMessage("§sSyntax: /money add [Betrag]");
                             return true;
                         }
-                        moneySender += (long) Integer.parseInt(args[1]);
+                        moneySender += Integer.parseInt(args[1]);
                         setMoney(senderJSON, moneySender, uuidSender);
                         p.sendMessage("Du Admin hast dir " + args[1] + " Eugen gegeben. Frech von dir.");
                         return true;
