@@ -11,7 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.Objects;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "deprecation"})
 public class onInventoryCloseEvent implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
