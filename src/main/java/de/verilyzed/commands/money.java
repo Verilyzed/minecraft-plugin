@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 import java.sql.SQLException;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class money implements CommandExecutor {
 
     // TODO: Generics kommen später
@@ -39,7 +40,7 @@ public class money implements CommandExecutor {
             p.sendMessage(KrassAlla.PREFIX + "Du hast " + moneySender + " Geld");
             return true;
         }
-        int betrag = 0;
+        int betrag;
         switch (args[0].toLowerCase()) {
             case "give":
                 if (args.length < 3) break;
