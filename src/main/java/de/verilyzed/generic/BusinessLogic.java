@@ -56,7 +56,7 @@ public class BusinessLogic {
     }
     public boolean insertEntry(String fields, String values, String table) {
         DatabaseHandler db = new DatabaseHandler();
-        String abfrage = "INSERT INTO table (" + fields + ") VALUES (" + values + ");";
+        String abfrage = "INSERT INTO "+ table + " (" + fields + ") VALUES (" + values + ");";
         boolean result = db.executeUpdate(abfrage);
         db.close();
         return result;
