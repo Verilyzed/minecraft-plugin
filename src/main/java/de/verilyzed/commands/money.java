@@ -42,8 +42,8 @@ public class money implements CommandExecutor {
         switch (args[0].toLowerCase()) {
             case "give":
                 if (args.length < 3) break;
-                String empfaenger = args[2];
-                betrag = Integer.parseInt(args[3]);
+                String empfaenger = args[1];
+                betrag = Integer.parseInt(args[2]);
                 if (moneySender < betrag || betrag < 0) {
                     p.sendMessage(KrassAlla.PREFIX + "Du hast nicht genügend Geld.");
                     return true;
