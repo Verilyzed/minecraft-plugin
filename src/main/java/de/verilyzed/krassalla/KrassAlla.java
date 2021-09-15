@@ -34,11 +34,12 @@ public final class KrassAlla extends JavaPlugin {
         enableTabCompleter();
 
         enableListener();
-        try {
-            ds = DataSource.getInstance();
-        } catch (IOException | SQLException | PropertyVetoException e) {
-            e.printStackTrace();
-        }
+
+        ds = DataSource.getInstance();
+
+        if (ds == null)
+            System.out.println("DS IS NULL");
+
         logic = new BusinessLogic();
         log("Plugin loaded.");
     }
