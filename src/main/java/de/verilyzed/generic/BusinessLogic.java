@@ -13,12 +13,17 @@ import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class BusinessLogic {
+    public DatabaseHandler db;
 
-    public static int getMoney(String name) {
+    public BusinessLogic() {
+        db = new DatabaseHandler();
+    }
+
+    public int getMoney(String name) {
         String abfrage = "SELECT money FROM users WHERE name='" + name + "';";
-        DatabaseHandler db = new DatabaseHandler();
-        try {
-            ResultSet rs = db.executeQuery(abfrage);
+        try (
+                ResultSet rs = db.executeQuery(abfrage)
+        ) {
             rs.next();
             return rs.getInt(1);
         } catch (SQLException e) {
@@ -27,11 +32,11 @@ public class BusinessLogic {
         return -1;
     }
 
-    public static boolean sendMoney(String nameSender, String nameReceiver, int Betrag) {
+    public boolean sendMoney(String nameSender, String nameReceiver, int Betrag) throws SQLException {
         int moneySender = getMoney(nameSender);
         int moneyReceiver = getMoney(nameReceiver);
         if (moneySender == -1 || moneyReceiver == -1)
-            return false;
+            throw new SQLException("Money cannot be fetched from db.");
         if (Betrag > 0) {
             moneySender -= Betrag;
             moneyReceiver += Betrag;
@@ -40,21 +45,20 @@ public class BusinessLogic {
         }
         boolean res1 = writeToDB("money", Integer.toString(moneySender), "name", nameSender);
         boolean res2 = writeToDB("money", Integer.toString(moneyReceiver), "name", nameReceiver);
-        return (res1 || res2);
+        if (res1 && res2)
+            return true;
+        throw new SQLException("Money cannot be set");
 
     }
 
-    public static boolean writeToDB(String field, String value, String cond, String condValue) {
+    public boolean writeToDB(String field, String value, String cond, String condValue) {
         String abfrage = "UPDATE users SET '" + field + "'= '" + value + "' WHERE '" + cond + "' =  '" + condValue + "';";
-        DatabaseHandler db = new DatabaseHandler();
         boolean res = db.executeUpdate(abfrage);
         return res;
     }
 
     public boolean checkUserExistsInDB(UUID uuid) {
-        DatabaseHandler db = new DatabaseHandler();
-        ResultSet rs = db.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = '" + uuid.toString() + "';");
-        try {
+        try (ResultSet rs = db.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = '" + uuid.toString() + "';")) {
             if (rs.next()) {
                 if (rs.getInt(1) == 0)
                     return false;
@@ -68,23 +72,23 @@ public class BusinessLogic {
     }
 
     public boolean createUserinDatabase(Player p, JSONObject jsonObject) {
-        DatabaseHandler db = new DatabaseHandler();
         String abfrage = "INSERT INTO users (money, backpack, uuid, name) VALUES (" + jsonObject.get("money") + ", '" + jsonObject.get("backpack") + "', '" + p.getUniqueId().toString() + "', '" + p.getName() + "');";
         return db.executeUpdate(abfrage);
     }
 
     // Below is legacy code to be compatible with the deprecated JSON-File Storage-Backend we used before.
     public JSONObject getJSONObject(UUID uuid) {
-        DatabaseHandler db = new DatabaseHandler();
         String abfrage = "SELECT * FROM users WHERE uuid='" + uuid + "';";
-        ResultSet rs = db.executeQuery(abfrage);
-        JSONArray object = mapResultSet(rs);
-        JSONParser parser = new JSONParser();
-        return (JSONObject) object.get(1);
+        try (ResultSet rs = db.executeQuery(abfrage)) {
+            JSONArray object = mapResultSet(rs);
+            return (JSONObject) object.get(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new JSONObject();
     }
 
     public boolean setJSONObject(UUID uuid, JSONObject jsonObject) {
-        DatabaseHandler db = new DatabaseHandler();
         String abfrage = "UPDATE users SET money=" + jsonObject.get("money") + ", backpack=" + jsonObject.get("backpack") + "WHERE uuid=" + uuid.toString() + ";";
         return db.executeUpdate(abfrage);
     }

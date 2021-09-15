@@ -4,22 +4,27 @@ import de.verilyzed.commands.*;
 import de.verilyzed.events.onInventoryCloseEvent;
 import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
+import de.verilyzed.generic.BusinessLogic;
+import de.verilyzed.generic.DataSource;
+import de.verilyzed.generic.DatabaseHandler;
 import de.verilyzed.tabcompleter.JsonTabCompleter;
 import de.verilyzed.tabcompleter.MoneyTabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public final class KrassAlla extends JavaPlugin {
 
     public static String PREFIX;
-
+    public static DataSource ds;
+    public static BusinessLogic logic;
     public static String dataFolder;
-
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -30,7 +35,12 @@ public final class KrassAlla extends JavaPlugin {
         enableTabCompleter();
 
         enableListener();
-
+        try {
+            ds = DataSource.getInstance();
+        } catch (IOException | SQLException | PropertyVetoException e) {
+            e.printStackTrace();
+        }
+        logic = new BusinessLogic();
         log("Plugin loaded.");
     }
 

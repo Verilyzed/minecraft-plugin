@@ -1,42 +1,36 @@
 package de.verilyzed.generic;
 
-import java.sql.*;
+import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DatabaseHandler {
-    private static final String url = "jdbc:mysql://52.232.13.152:443/minecraft";
-    private static final String user = "root";
-    private static final String pass = "password";
-    private static Connection con;
-    private Statement stm;
-
-    public DatabaseHandler() {
-        createConnection();
-    }
-
-    private void createConnection() {
-        try {
-            // Verbindung aufbauen
-            con = DriverManager.getConnection(url, user, pass);
-            System.out.println("Verbindung erfolgreich hergestellt");
-            this.stm = con.createStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public ResultSet executeQuery(String abfrage) {
         ResultSet rs = null;
-        try {
+        try (
+                Connection con = DataSource.getInstance().getConnection();
+                Statement stm = con.createStatement();
+        ) {
+
             rs = stm.executeQuery(abfrage);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException | PropertyVetoException | IOException e) {
+            e.printStackTrace();
         }
         return rs;
     }
+
     public boolean executeUpdate(String abfrage) {
-        try {
+
+        try (
+                Connection con = DataSource.getInstance().getConnection();
+                Statement stm = con.createStatement();
+        ) {
             stm.executeUpdate(abfrage);
-        } catch (SQLException e) {
+        } catch (SQLException | PropertyVetoException | IOException e) {
             e.printStackTrace();
             return false;
         }
