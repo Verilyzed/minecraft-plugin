@@ -3,7 +3,6 @@ package de.verilyzed.generic;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -53,15 +52,13 @@ public class BusinessLogic {
 
     public boolean writeToDB(String field, String value, String cond, String condValue) {
         String abfrage = "UPDATE users SET '" + field + "'= '" + value + "' WHERE '" + cond + "' =  '" + condValue + "';";
-        boolean res = db.executeUpdate(abfrage);
-        return res;
+        return db.executeUpdate(abfrage);
     }
 
     public boolean checkUserExistsInDB(UUID uuid) {
         try (ResultSet rs = db.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = '" + uuid.toString() + "';")) {
             if (rs.next()) {
-                if (rs.getInt(1) == 0)
-                    return false;
+                return rs.getInt(1) != 0;
             }
             return true;
         } catch (SQLException e) {
@@ -72,7 +69,7 @@ public class BusinessLogic {
     }
 
     public boolean createUserinDatabase(Player p, JSONObject jsonObject) {
-        String abfrage = "INSERT INTO users (money, backpack, uuid, name) VALUES (" + jsonObject.get("money") + ", '" + jsonObject.get("backpack") + "', '" + p.getUniqueId().toString() + "', '" + p.getName() + "');";
+        String abfrage = "INSERT INTO users (money, backpack, uuid, name) VALUES (" + jsonObject.get("money") + ", '" + jsonObject.get("backpack") + "', '" + p.getUniqueId() + "', '" + p.getName() + "');";
         return db.executeUpdate(abfrage);
     }
 
@@ -96,7 +93,7 @@ public class BusinessLogic {
 
     public JSONArray mapResultSet(ResultSet rs) {
         JSONArray jArray = new JSONArray();
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
         try {
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
@@ -108,19 +105,19 @@ public class BusinessLogic {
                     if (value == null) {
                         jsonObject.put(column, "");
                     } else if (value instanceof Integer) {
-                        jsonObject.put(column, (Integer) value);
+                        jsonObject.put(column, value);
                     } else if (value instanceof String) {
-                        jsonObject.put(column, (String) value);
+                        jsonObject.put(column, value);
                     } else if (value instanceof Boolean) {
-                        jsonObject.put(column, (Boolean) value);
+                        jsonObject.put(column, value);
                     } else if (value instanceof Date) {
                         jsonObject.put(column, ((Date) value).getTime());
                     } else if (value instanceof Long) {
-                        jsonObject.put(column, (Long) value);
+                        jsonObject.put(column, value);
                     } else if (value instanceof Double) {
-                        jsonObject.put(column, (Double) value);
+                        jsonObject.put(column, value);
                     } else if (value instanceof Float) {
-                        jsonObject.put(column, (Float) value);
+                        jsonObject.put(column, value);
                     } else {
                         throw new IllegalArgumentException("Unmappable object type: " + value.getClass());
                     }
