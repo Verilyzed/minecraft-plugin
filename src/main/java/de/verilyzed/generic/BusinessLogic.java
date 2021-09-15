@@ -58,7 +58,7 @@ public class BusinessLogic {
     public boolean writeToDB(String field, String value, String cond, String condValue) {
         DatabaseHandler db = new DatabaseHandler();
 
-        String abfrage = "UPDATE users SET '" + field + "'= '" + value + "' WHERE '" + cond + "' =  '" + condValue + "';";
+        String abfrage = "UPDATE users SET " + field + "= '" + value + "' WHERE " + cond + " = '" + condValue + "';";
         boolean ret = db.executeUpdate(abfrage);
         db.close();
         return ret;
