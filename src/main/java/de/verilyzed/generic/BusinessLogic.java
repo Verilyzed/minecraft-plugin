@@ -59,9 +59,9 @@ public class BusinessLogic {
         DatabaseHandler db = new DatabaseHandler();
 
         String abfrage = "UPDATE users SET '" + field + "'= '" + value + "' WHERE '" + cond + "' =  '" + condValue + "';";
-
+        boolean ret = db.executeUpdate(abfrage);
         db.close();
-        return db.executeUpdate(abfrage);
+        return ret;
     }
 
     public boolean checkUserExistsInDB(UUID uuid) {
