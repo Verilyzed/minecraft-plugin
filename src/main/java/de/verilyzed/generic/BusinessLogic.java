@@ -47,18 +47,18 @@ public class BusinessLogic {
         } else {
             return false;
         }
-        boolean res1 = writeToDB("money", Integer.toString(moneySender), "name", nameSender);
-        boolean res2 = writeToDB("money", Integer.toString(moneyReceiver), "name", nameReceiver);
+        boolean res1 = updateEntry("money", Integer.toString(moneySender), "name", nameSender, "users");
+        boolean res2 = updateEntry("money", Integer.toString(moneyReceiver), "name", nameReceiver, "users");
         if (res1 && res2)
             return true;
         throw new SQLException("Money cannot be set");
 
     }
 
-    public boolean writeToDB(String field, String value, String cond, String condValue) {
+    public boolean updateEntry(String field, String value, String cond, String condValue, String table) {
         DatabaseHandler db = new DatabaseHandler();
 
-        String abfrage = "UPDATE users SET " + field + "= '" + value + "' WHERE " + cond + " = '" + condValue + "';";
+        String abfrage = "UPDATE " + table + " SET " + field + "= '" + value + "' WHERE " + cond + " = '" + condValue + "';";
         boolean ret = db.executeUpdate(abfrage);
         db.close();
         return ret;
