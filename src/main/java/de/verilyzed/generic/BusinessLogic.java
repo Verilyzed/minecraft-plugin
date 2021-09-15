@@ -20,15 +20,16 @@ public class BusinessLogic {
 
     public int getMoney(String name) {
         String abfrage = "SELECT money FROM users WHERE name='" + name + "';";
+        int ret = -1;
         try (
                 ResultSet rs = db.executeQuery(abfrage)
         ) {
             rs.next();
-            return rs.getInt(1);
+            ret = rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1;
+        return ret;
     }
 
     public boolean sendMoney(String nameSender, String nameReceiver, int Betrag) throws SQLException {
