@@ -66,7 +66,7 @@ public class money implements CommandExecutor {
                     return true;
                 }
                 betrag = Integer.parseInt(args[1]);
-                KrassAlla.logic.writeToDB("money", Integer.toString(betrag + moneySender), "name", p.getName());
+                KrassAlla.logic.updateEntry("money", Integer.toString(betrag + moneySender), "name", p.getName(), "users");
                 p.sendMessage("Du Admin hast dir " + args[1] + " Eugen gegeben. Frech von dir.");
                 return true;
             default:
