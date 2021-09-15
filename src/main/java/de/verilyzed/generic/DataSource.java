@@ -11,12 +11,19 @@ public class DataSource {
     private static DataSource datasource;
     private ComboPooledDataSource cpds;
 
-    private DataSource() throws IOException, SQLException, PropertyVetoException {
+    private DataSource() {
         cpds = new ComboPooledDataSource();
         cpds.setJdbcUrl("jdbc:mysql://52.232.13.152:443/minecraft");
         cpds.setUser("root");
         cpds.setPassword("password");
 
+        cpds.setInitialPoolSize(5);
+
+        try {
+            System.out.println(cpds.getNumIdleConnections() + " ");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         // the settings below are optional -- c3p0 can work with defaults
 //        cpds.setMinPoolSize(5);
 //        cpds.setAcquireIncrement(5);
@@ -27,7 +34,8 @@ public class DataSource {
     public void close() {
         cpds.close();
     }
-    public static DataSource getInstance() throws IOException, SQLException, PropertyVetoException {
+
+    public static DataSource getInstance() {
         if (datasource == null) {
             datasource = new DataSource();
         }

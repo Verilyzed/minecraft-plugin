@@ -12,13 +12,15 @@ import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class BusinessLogic {
-    public DatabaseHandler db;
+    //public DatabaseHandler db;
 
     public BusinessLogic() {
-        db = new DatabaseHandler();
+        //b = new DatabaseHandler();
     }
 
     public int getMoney(String name) {
+        DatabaseHandler db = new DatabaseHandler();
+
         String abfrage = "SELECT money FROM users WHERE name='" + name + "';";
         int ret = -1;
         try (
@@ -29,6 +31,8 @@ public class BusinessLogic {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        db.close();
         return ret;
     }
 
@@ -52,15 +56,26 @@ public class BusinessLogic {
     }
 
     public boolean writeToDB(String field, String value, String cond, String condValue) {
+        DatabaseHandler db = new DatabaseHandler();
+
         String abfrage = "UPDATE users SET '" + field + "'= '" + value + "' WHERE '" + cond + "' =  '" + condValue + "';";
+
+        db.close();
         return db.executeUpdate(abfrage);
     }
 
     public boolean checkUserExistsInDB(UUID uuid) {
-        try (ResultSet rs = db.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = '" + uuid.toString() + "';")) {
+        DatabaseHandler db = new DatabaseHandler();
+
+        try {
+            ResultSet rs = db.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = '" + uuid.toString() + "';");
+
             if (rs.next()) {
                 return rs.getInt(1) != 0;
             }
+
+            db.close();
+
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,24 +85,35 @@ public class BusinessLogic {
     }
 
     public boolean createUserinDatabase(Player p, JSONObject jsonObject) {
+        DatabaseHandler db = new DatabaseHandler();
+
         String abfrage = "INSERT INTO users (money, backpack, uuid, name) VALUES (" + jsonObject.get("money") + ", '" + jsonObject.get("backpack") + "', '" + p.getUniqueId() + "', '" + p.getName() + "');";
-        return db.executeUpdate(abfrage);
+
+        boolean result = db.executeUpdate(abfrage);
+        db.close();
+        return result;
     }
 
     // Below is legacy code to be compatible with the deprecated JSON-File Storage-Backend we used before.
     public JSONObject getJSONObject(UUID uuid) {
+        DatabaseHandler db = new DatabaseHandler();
         String abfrage = "SELECT * FROM users WHERE uuid='" + uuid + "';";
         try (ResultSet rs = db.executeQuery(abfrage)) {
             JSONArray object = mapResultSet(rs);
+            db.close();
             return (JSONObject) object.get(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        db.close();
         return new JSONObject();
     }
 
     public boolean setJSONObject(UUID uuid, JSONObject jsonObject) {
+        DatabaseHandler db = new DatabaseHandler();
         String abfrage = "UPDATE users SET money=" + jsonObject.get("money") + ", backpack=" + jsonObject.get("backpack") + "WHERE uuid=" + uuid.toString() + ";";
+
+        db.close();
         return db.executeUpdate(abfrage);
     }
 
