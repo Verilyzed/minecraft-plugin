@@ -2,6 +2,7 @@ package de.verilyzed.commands;
 
 import de.verilyzed.generic.FileManager;
 import de.verilyzed.krassalla.KrassAlla;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -61,13 +62,21 @@ public class money implements CommandExecutor {
                 }
                 return true;
             case "add":
-                if (args.length != 2) {
-                    p.sendMessage("§sSyntax: /money add [Betrag]");
+                if (args.length != 3) {
+                    p.sendMessage("§sSyntax: /money add [Spieler] [Betrag]");
                     return true;
                 }
-                betrag = Integer.parseInt(args[1]);
-                KrassAlla.logic.updateEntry("money", Integer.toString(betrag + moneySender), "name", p.getName(), "users");
-                p.sendMessage("Du Admin hast dir " + args[1] + " Eugen gegeben. Frech von dir.");
+
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (args[1].equalsIgnoreCase(player.getName())) {
+                        betrag = Integer.parseInt(args[2]);
+                        KrassAlla.logic.updateEntry("money", Integer.toString(betrag + moneySender), "name", args[1], "users");
+                        p.sendMessage("Du Admin hast " + args[1] + " " + args[2] + " Eugen gegeben. Frech von dir.");
+                        return true;
+                    }
+                }
+
+                p.sendMessage("§sSyntax: /money add [Spieler] [Betrag]");
                 return true;
             default:
                 p.sendMessage("§sFalscher Befehl, unterstützt wird:");

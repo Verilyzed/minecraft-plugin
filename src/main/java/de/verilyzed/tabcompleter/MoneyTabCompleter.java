@@ -18,8 +18,8 @@ public class MoneyTabCompleter implements TabCompleter {
         GenericTabCompleter gtc = new GenericTabCompleter();
 
         List<String> tab1 = Arrays.asList("add", "give");
-        List<String> tab2 = Other.getOnlinePlayerNames("give/");
-        tab2.add("add/<Betrag>");
+        List<String> tab2 = Other.getOnlinePlayerNames();
+        tab2.add("add/<Player>/<Betrag>");
         List<String> tab3 = Collections.singletonList("give/<Player>/<Betrag>");
 
         List<List<String>> tabs = Arrays.asList(tab1, tab2, tab3);
