@@ -8,9 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseHandler {
-
+    public static Statement stm;
+    public static Connection con;
+    public static ResultSet rs;
     public ResultSet executeQuery(String abfrage) {
-        ResultSet rs = null;
         try (
                 Connection con = DataSource.getInstance().getConnection();
                 Statement stm = con.createStatement();
@@ -24,7 +25,6 @@ public class DatabaseHandler {
     }
 
     public boolean executeUpdate(String abfrage) {
-
         try (
                 Connection con = DataSource.getInstance().getConnection();
                 Statement stm = con.createStatement();
