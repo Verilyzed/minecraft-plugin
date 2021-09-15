@@ -54,10 +54,15 @@ public class BusinessLogic {
         throw new SQLException("Money cannot be set");
 
     }
-
+    public boolean insertEntry(String fields, String values, String table) {
+        DatabaseHandler db = new DatabaseHandler();
+        String abfrage = "INSERT INTO table (" + fields + ") VALUES (" + values + ");";
+        boolean result = db.executeUpdate(abfrage);
+        db.close();
+        return result;
+    }
     public boolean updateEntry(String field, String value, String cond, String condValue, String table) {
         DatabaseHandler db = new DatabaseHandler();
-
         String abfrage = "UPDATE " + table + " SET " + field + "= '" + value + "' WHERE " + cond + " = '" + condValue + "';";
         boolean ret = db.executeUpdate(abfrage);
         db.close();
@@ -85,13 +90,7 @@ public class BusinessLogic {
     }
 
     public boolean createUserinDatabase(Player p, JSONObject jsonObject) {
-        DatabaseHandler db = new DatabaseHandler();
-
-        String abfrage = "INSERT INTO users (money, backpack, uuid, name) VALUES (" + jsonObject.get("money") + ", '" + jsonObject.get("backpack") + "', '" + p.getUniqueId() + "', '" + p.getName() + "');";
-
-        boolean result = db.executeUpdate(abfrage);
-        db.close();
-        return result;
+        return insertEntry("money, backpack, uuid, name", jsonObject.get("money") + ", '" + jsonObject.get("backpack") + "', '" + p.getUniqueId() + "', '" + p.getName(), "users");
     }
 
     // Below is legacy code to be compatible with the deprecated JSON-File Storage-Backend we used before.
