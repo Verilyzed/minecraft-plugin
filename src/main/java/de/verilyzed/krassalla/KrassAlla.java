@@ -6,7 +6,6 @@ import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
 import de.verilyzed.generic.BusinessLogic;
 import de.verilyzed.generic.DataSource;
-import de.verilyzed.generic.DatabaseHandler;
 import de.verilyzed.tabcompleter.JsonTabCompleter;
 import de.verilyzed.tabcompleter.MoneyTabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -85,6 +84,8 @@ public final class KrassAlla extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        ds.close();
+        ds = null;
     }
 
     public static void log(String text) {
