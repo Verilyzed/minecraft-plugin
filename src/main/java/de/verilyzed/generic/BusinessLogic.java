@@ -1,13 +1,11 @@
 package de.verilyzed.generic;
 
+import com.zaxxer.hikari.pool.HikariPool;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.UUID;
 
 @SuppressWarnings("unchecked")
@@ -63,6 +61,7 @@ public class BusinessLogic {
     public boolean updateEntry(String field, String value, String cond, String condValue, String table) {
         DatabaseHandler db = new DatabaseHandler();
         String abfrage = "UPDATE " + table + " SET " + field + "= '" + value + "' WHERE " + cond + " = '" + condValue + "';";
+        abfrage = String.format("UPDATE %s SET %s = '%s' WHERE %s = '%s';", table, field, value, condValue, condValue);
         boolean ret = db.executeUpdate(abfrage);
         db.close();
         return ret;
