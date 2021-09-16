@@ -46,7 +46,7 @@ public class money implements CommandExecutor {
                 if (args.length < 3) break;
                 String empfaenger = args[1];
                 betrag = Integer.parseInt(args[2]);
-                if (moneySender < betrag || betrag < 0) {
+                if (moneySender < betrag || betrag <= 0) {
                     p.sendMessage(KrassAlla.PREFIX + "Du hast nicht genügend Geld.");
                     return true;
                 }
@@ -63,7 +63,7 @@ public class money implements CommandExecutor {
                 }
                 return true;
             case "add":
-                if (args.length != 3) {
+                if (args.length != 3 ) {
                     p.sendMessage("§sSyntax: /money add [Spieler] [Betrag]");
                     return true;
                 }
@@ -71,14 +71,27 @@ public class money implements CommandExecutor {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (args[1].equalsIgnoreCase(player.getName())) {
                         betrag = Integer.parseInt(args[2]);
+                        if(betrag <= 0)
+                            return true;
                         KrassAlla.logic.updateEntry("money", Integer.toString(betrag + moneySender), "name", args[1], "users");
                         p.sendMessage("Du Admin hast " + args[1] + " " + args[2] + " Eugen gegeben. Frech von dir.");
                         return true;
                     }
                 }
-
                 p.sendMessage("§sSyntax: /money add [Spieler] [Betrag]");
                 return true;
+            case "remove":
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (args[1].equalsIgnoreCase(player.getName())) {
+                        betrag = Integer.parseInt(args[2]);
+                        if(betrag <= 0)
+                            return true;
+                        KrassAlla.logic.updateEntry("money", Integer.toString(betrag + moneySender), "name", args[1], "users");
+                        p.sendMessage("Du Admin hast " + args[1] + " " + args[2] + " Eugen gegeben. Frech von dir.");
+                        return true;
+                    }
+                }
+                break;
             default:
                 p.sendMessage("§sFalscher Befehl, unterstützt wird:");
                 p.sendMessage("/money");

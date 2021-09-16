@@ -25,25 +25,23 @@ public class onPlayerJoinEvent implements Listener {
             p.sendMessage("§8[§6+§8] §f" + e.getPlayer().getName());
             e.setJoinMessage("");
         }
-        BusinessLogic logic = KrassAlla.logic;
-        Path jsonpath = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder() + "/PlayerData/" + e.getPlayer().getUniqueId() + ".json");
+        JSONObject json = initUserJSON(e.getPlayer());
+        if (!KrassAlla.logic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
+            KrassAlla.logic.createUserinDatabase(e.getPlayer(), json);
+
+    }
+    private JSONObject initUserJSON(Player e) {
+        Path jsonpath = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder() + "/PlayerData/" + e.getUniqueId() + ".json");
         JSONObject json = new JSONObject();
-        json.put("name", e.getPlayer().getName());
+        json.put("name", e.getName());
         json.put("money", 100);
-
         JSONArray backpack = new JSONArray();
-
         json.put("backpack", backpack);
-        //Create file for each new joining user
         if (!Files.exists(jsonpath)) {
-
-
-            FileManager.setJSONObject(e.getPlayer().getUniqueId(), json);
-
+            FileManager.setJSONObject(e.getUniqueId(), json);
         } else {
             KrassAlla.log("File already exists.");
-            if (!logic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
-                logic.createUserinDatabase(e.getPlayer(), json);
         }
+        return json;
     }
 }

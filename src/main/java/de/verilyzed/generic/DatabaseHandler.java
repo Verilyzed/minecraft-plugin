@@ -1,10 +1,6 @@
 package de.verilyzed.generic;
 
 import de.verilyzed.krassalla.KrassAlla;
-
-import javax.xml.crypto.Data;
-import java.beans.PropertyVetoException;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
