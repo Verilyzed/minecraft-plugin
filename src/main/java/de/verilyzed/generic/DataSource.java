@@ -17,6 +17,15 @@ public class DataSource {
         hkds.addDataSourceProperty("cachePrepStmts", "true");
         hkds.addDataSourceProperty("prepStmtCacheSize", "250");
         hkds.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        hkds.addDataSourceProperty("useServerPrepStmts", "true");
+        hkds.addDataSourceProperty("useLocalSessionState", "true");
+        hkds.addDataSourceProperty("rewriteBatchedStatements", "true");
+        hkds.addDataSourceProperty("cacheResultSetMetadata", "true");
+        hkds.addDataSourceProperty("cacheServerConfiguration", "true");
+        hkds.addDataSourceProperty("elideSetAutoCommits", "true");
+        hkds.addDataSourceProperty("maintainTimeStats", "false");
+
+
         hkds.addDataSourceProperty("maxLifetime", "30000");
     }
 
