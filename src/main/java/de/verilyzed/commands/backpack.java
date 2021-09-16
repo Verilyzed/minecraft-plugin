@@ -2,6 +2,7 @@ package de.verilyzed.commands;
 
 import de.verilyzed.generic.FileManager;
 import de.verilyzed.krassalla.KrassAlla;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -25,8 +26,7 @@ public class backpack {
                 Player p = (Player) sender;
 
                 p.sendMessage(KrassAlla.PREFIX + "Opening backpack...");
-
-                Inventory inv = Bukkit.createInventory(p, InventoryType.CHEST, "Backpack");
+                Inventory inv = Bukkit.createInventory(p, InventoryType.CHEST, Component.text("Backpack "));
 
                 JSONObject jsonObject = FileManager.getJSONObject(p.getUniqueId());
 
