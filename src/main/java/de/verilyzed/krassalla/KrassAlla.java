@@ -8,6 +8,7 @@ import de.verilyzed.generic.BusinessLogic;
 import de.verilyzed.generic.DataSource;
 import de.verilyzed.tabcompleter.JsonTabCompleter;
 import de.verilyzed.tabcompleter.MoneyTabCompleter;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;

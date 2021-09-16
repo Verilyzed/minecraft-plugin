@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("unused")
 public class CommandExecuter implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        switch (command.getName().toLowerCase()) {
+        switch(command.getName().toLowerCase()) {
             case "money":
                 new money().onCommand(sender, command, label, args);
                 break;

@@ -31,24 +31,8 @@ public class money {
             int amount;
             switch (args[0].toLowerCase()) {
                 case "give":
-                    if (args.length < 3) break;
-                    String receiver = args[1];
-                    amount = Integer.parseInt(args[2]);
-                    if (moneySender < amount || amount <= 0) {
-                        p.sendMessage(KrassAlla.PREFIX + "Du hast nicht genügend Geld.");
-                        return;
-                    }
-                    int moneyReceiver = KrassAlla.logic.getMoney(receiver);
-                    if (moneyReceiver == -1) {
-                        p.sendMessage("§sHast du dich verschrieben, oder ist der Spieler vielleicht nicht online?");
-                        return;
-                    }
-                    try {
-                        KrassAlla.logic.sendMoney(p.getName(), receiver, amount);
-                    } catch (SQLException e) {
-                        p.sendMessage("Money could not be sent. There was a connection issue with the database.");
-
-                    }
+                    if (args.length < 3) return;
+                    give(args, p, moneySender);
                     return;
                 case "add":
                     if (args.length != 3) {
@@ -56,27 +40,14 @@ public class money {
                         return;
                     }
 
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (args[1].equalsIgnoreCase(player.getName())) {
-                            amount = Integer.parseInt(args[2]);
-                            if (amount <= 0)
-                                return;
-                            KrassAlla.logic.updateEntry("money", Integer.toString(amount + moneySender), "name", args[1], "users");
-                            p.sendMessage("Du Admin hast " + args[1] + " " + args[2] + " Eugen gegeben. Frech von dir.");
-                        }
-                    }
-                    p.sendMessage("§sSyntax: /money add [Spieler] [Betrag]");
+                    if (add(args, p, moneySender)) return;
                     break;
                 case "remove":
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (args[1].equalsIgnoreCase(player.getName())) {
-                            amount = Integer.parseInt(args[2]);
-                            if (amount <= 0)
-                                return;
-                            KrassAlla.logic.updateEntry("money", Integer.toString(amount + moneySender), "name", args[1], "users");
-                            p.sendMessage("Du Admin hast " + args[1] + " " + args[2] + " Eugen gegeben. Frech von dir.");
-                        }
+                    if (args.length != 3) {
+                        p.sendMessage("§sSyntax: /money remove [Spieler] [Betrag]");
+                        return;
                     }
+                    remove(args, p, moneySender);
                     break;
                 default:
                     p.sendMessage("§sFalscher Befehl, unterstützt wird:");
@@ -86,5 +57,53 @@ public class money {
             }
         });
         return true;
+    }
+
+    private void remove(@NotNull String @NotNull [] args, Player p, int moneySender) {
+        int amount;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (args[1].equalsIgnoreCase(player.getName())) {
+                amount = Integer.parseInt(args[2]);
+                if (amount <= 0)
+                    return;
+                KrassAlla.logic.updateEntry("money", Integer.toString(amount - moneySender), "name", args[1], "users");
+                p.sendMessage("Du Admin hast " + args[1] + " " + args[2] + " Eugen gegeben. Frech von dir.");
+            }
+        }
+    }
+
+    private boolean add(@NotNull String[] args, Player p, int moneySender) {
+        int amount;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (args[1].equalsIgnoreCase(player.getName())) {
+                amount = Integer.parseInt(args[2]);
+                if (amount <= 0)
+                    return true;
+                KrassAlla.logic.updateEntry("money", Integer.toString(amount + moneySender), "name", args[1], "users");
+                p.sendMessage("Du Admin hast " + args[1] + " " + args[2] + " Eugen gegeben. Frech von dir.");
+            }
+        }
+        return false;
+    }
+
+    private void give(@NotNull String @NotNull [] args, Player p, int moneySender) {
+        int amount;
+        String receiver = args[1];
+        amount = Integer.parseInt(args[2]);
+        if (moneySender < amount || amount <= 0) {
+            p.sendMessage(KrassAlla.PREFIX + "Du hast nicht genügend Geld.");
+            return;
+        }
+        int moneyReceiver = KrassAlla.logic.getMoney(receiver);
+        if (moneyReceiver == -1) {
+            p.sendMessage("§sHast du dich verschrieben, oder ist der Spieler vielleicht nicht online?");
+            return;
+        }
+        try {
+            KrassAlla.logic.sendMoney(p.getName(), receiver, amount);
+        } catch (SQLException e) {
+            p.sendMessage("Money could not be sent. There was a connection issue with the database.");
+
+        }
     }
 }
