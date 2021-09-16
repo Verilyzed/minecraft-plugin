@@ -24,12 +24,13 @@ public final class KrassAlla extends JavaPlugin {
     public static DataSource ds;
     public static BusinessLogic logic;
     public static String dataFolder;
+    public static JavaPlugin plugin;
     @Override
     public void onEnable() {
         // Plugin startup logic
         loadConfig();
         enableCommands();
-
+        plugin = this;
         enableTabCompleter();
 
         enableListener();

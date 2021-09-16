@@ -26,8 +26,6 @@ public class DataSource {
         hkds.addDataSourceProperty("cacheServerConfiguration", "true");
         hkds.addDataSourceProperty("elideSetAutoCommits", "true");
         hkds.addDataSourceProperty("maintainTimeStats", "false");
-
-
         hkds.addDataSourceProperty("maxLifetime", "30000");
     }
 
