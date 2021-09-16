@@ -20,7 +20,6 @@ public class BusinessLogic {
 
     public int getMoney(String name) {
         DatabaseHandler db = new DatabaseHandler();
-
         String abfrage = "SELECT money FROM users WHERE name='" + name + "';";
         int ret = -1;
         try (
@@ -31,11 +30,9 @@ public class BusinessLogic {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         db.close();
         return ret;
     }
-
     public boolean sendMoney(String nameSender, String nameReceiver, int Betrag) throws SQLException {
         int moneySender = getMoney(nameSender);
         int moneyReceiver = getMoney(nameReceiver);
@@ -52,7 +49,6 @@ public class BusinessLogic {
         if (res1 && res2)
             return true;
         throw new SQLException("Money cannot be set");
-
     }
     public boolean insertEntry(String fields, String values, String table) {
         DatabaseHandler db = new DatabaseHandler();
