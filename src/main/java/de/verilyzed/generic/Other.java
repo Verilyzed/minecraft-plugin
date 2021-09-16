@@ -15,7 +15,7 @@ public class Other {
                 continue;
             return receiver.getUniqueId();
         }
-    return UUID.fromString("");
+        return UUID.fromString("");
     }
 
     public static List<String> getOnlinePlayerNames() {

@@ -33,6 +33,7 @@ public class BusinessLogic {
         db.close();
         return ret;
     }
+
     public boolean sendMoney(String nameSender, String nameReceiver, int Betrag) throws SQLException {
         int moneySender = getMoney(nameSender);
         int moneyReceiver = getMoney(nameReceiver);
@@ -50,13 +51,15 @@ public class BusinessLogic {
             return true;
         throw new SQLException("Money cannot be set");
     }
+
     public boolean insertEntry(String fields, String values, String table) {
         DatabaseHandler db = new DatabaseHandler();
-        String abfrage = "INSERT INTO "+ table + " (" + fields + ") VALUES (" + values + ");";
+        String abfrage = "INSERT INTO " + table + " (" + fields + ") VALUES (" + values + ");";
         boolean result = db.executeUpdate(abfrage);
         db.close();
         return result;
     }
+
     public boolean updateEntry(String field, String value, String cond, String condValue, String table) {
         DatabaseHandler db = new DatabaseHandler();
         String abfrage = "UPDATE " + table + " SET " + field + "= '" + value + "' WHERE " + cond + " = '" + condValue + "';";

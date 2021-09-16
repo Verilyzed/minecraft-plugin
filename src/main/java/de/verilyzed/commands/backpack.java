@@ -5,7 +5,6 @@ import de.verilyzed.krassalla.KrassAlla;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -17,11 +16,9 @@ import org.json.simple.JSONObject;
 
 import java.util.Objects;
 
-@SuppressWarnings("deprecation")
-public class backpack implements CommandExecutor {
+public class backpack {
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
         if (command.getName().equalsIgnoreCase("backpack")) {
             if (sender instanceof Player) {
@@ -44,10 +41,8 @@ public class backpack implements CommandExecutor {
                 }
 
                 p.openInventory(inv);
-                return true;
             }
         }
 
-        return false;
     }
 }

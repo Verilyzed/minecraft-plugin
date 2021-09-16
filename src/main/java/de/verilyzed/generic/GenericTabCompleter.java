@@ -63,24 +63,25 @@ public class GenericTabCompleter {
         this.caseSensitive = caseSensitive;
         this.suggestions = suggestions;
     }
-/**
-    public void initialize(String commandString, List<List<String>> tabCompleter, boolean caseSensitive, boolean suggestions) {
-        boolean[] _caseSensitive = new boolean[tabCompleter.size()];
-        Arrays.fill(_caseSensitive, caseSensitive);
 
-        boolean[] _suggestions = new boolean[tabCompleter.size()];
-        Arrays.fill(_suggestions, suggestions);
-
-        initialize(commandString, tabCompleter, _caseSensitive, _suggestions);
-    }
-
-    public void initialize(String commandString, List<List<String>> tabCompleter, boolean[] caseSensitive, boolean suggestions) {
-        boolean[] _suggestions = new boolean[tabCompleter.size()];
-        Arrays.fill(_suggestions, suggestions);
-
-        initialize(commandString, tabCompleter, caseSensitive, _suggestions);
-    }
-*/
+    /**
+     * public void initialize(String commandString, List<List<String>> tabCompleter, boolean caseSensitive, boolean suggestions) {
+     * boolean[] _caseSensitive = new boolean[tabCompleter.size()];
+     * Arrays.fill(_caseSensitive, caseSensitive);
+     * <p>
+     * boolean[] _suggestions = new boolean[tabCompleter.size()];
+     * Arrays.fill(_suggestions, suggestions);
+     * <p>
+     * initialize(commandString, tabCompleter, _caseSensitive, _suggestions);
+     * }
+     * <p>
+     * public void initialize(String commandString, List<List<String>> tabCompleter, boolean[] caseSensitive, boolean suggestions) {
+     * boolean[] _suggestions = new boolean[tabCompleter.size()];
+     * Arrays.fill(_suggestions, suggestions);
+     * <p>
+     * initialize(commandString, tabCompleter, caseSensitive, _suggestions);
+     * }
+     */
     public void initialize(String commandString, List<List<String>> tabCompleter, boolean caseSensitive, boolean[] suggestions) {
         boolean[] _caseSensitive = new boolean[tabCompleter.size()];
         Arrays.fill(_caseSensitive, caseSensitive);

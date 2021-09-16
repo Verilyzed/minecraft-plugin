@@ -1,6 +1,6 @@
 package de.verilyzed.krassalla;
 
-import de.verilyzed.commands.*;
+import de.verilyzed.commands.CommandExecuter;
 import de.verilyzed.events.onInventoryCloseEvent;
 import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
@@ -10,12 +10,10 @@ import de.verilyzed.tabcompleter.JsonTabCompleter;
 import de.verilyzed.tabcompleter.MoneyTabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.Objects;
 
 public final class KrassAlla extends JavaPlugin {
@@ -25,6 +23,11 @@ public final class KrassAlla extends JavaPlugin {
     public static BusinessLogic logic;
     public static String dataFolder;
     public static JavaPlugin plugin;
+
+    public static void log(String text) {
+        System.out.println(PREFIX + text);
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -62,13 +65,10 @@ public final class KrassAlla extends JavaPlugin {
     }
 
     public void enableCommands() {
-        Objects.requireNonNull(getCommand("test")).setExecutor(new test());
-        Objects.requireNonNull(getCommand("buy")).setExecutor(new buy());
-        Objects.requireNonNull(getCommand("echo")).setExecutor(new echo());
-        Objects.requireNonNull(getCommand("backpack")).setExecutor(new backpack());
-        Objects.requireNonNull(getCommand("money")).setExecutor(new money());
-        Objects.requireNonNull(getCommand("json")).setExecutor(new json());
-        Objects.requireNonNull(getCommand("bounty")).setExecutor(new bounty());
+        String[] commands = {"test", "buy", "echo", "backpack", "money", "json", "bounty"};
+        for (String command : commands) {
+            Objects.requireNonNull(getCommand(command)).setExecutor(new CommandExecuter());
+        }
     }
 
     public void enableTabCompleter() {
@@ -87,9 +87,5 @@ public final class KrassAlla extends JavaPlugin {
         // Plugin shutdown logic
         ds.close();
         ds = null;
-    }
-
-    public static void log(String text) {
-        System.out.println(PREFIX + text);
     }
 }

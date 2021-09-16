@@ -4,7 +4,6 @@ import de.verilyzed.generic.FileManager;
 import de.verilyzed.krassalla.KrassAlla;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -12,11 +11,9 @@ import org.json.simple.JSONObject;
 
 import java.util.Objects;
 
-@SuppressWarnings({"unchecked", "StringConcatenationInLoop"})
-public class json implements CommandExecutor {
+public class json {
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
         if (command.getName().equalsIgnoreCase("json")) {
             if (sender instanceof Player) {
@@ -52,14 +49,14 @@ public class json implements CommandExecutor {
 
                                         p.sendMessage(KrassAlla.PREFIX + "§cSyntax: /json modify [Username] [" + keys + "]");
                                     }
-                                    return true;
+                                    return;
                                 }
                             }
                         } else {
                             p.sendMessage(KrassAlla.PREFIX + "§cSyntax: /json modify [Username]");
                         }
 
-                        return true;
+                        return;
                     }
 
                     if (args[0].equalsIgnoreCase("read")) {
@@ -85,16 +82,14 @@ public class json implements CommandExecutor {
                             p.sendMessage(KrassAlla.PREFIX + "§cSyntax: /json read [Username]");
                         }
 
-                        return true;
+                        return;
                     }
 
                 }
                 p.sendMessage(KrassAlla.PREFIX + "§cSyntax: /json [modify|read]");
             }
 
-            return true;
         }
 
-        return false;
     }
 }

@@ -1,6 +1,7 @@
 package de.verilyzed.generic;
 
 import de.verilyzed.krassalla.KrassAlla;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,6 +1,5 @@
 package de.verilyzed.events;
 
-import de.verilyzed.generic.BusinessLogic;
 import de.verilyzed.generic.FileManager;
 import de.verilyzed.krassalla.KrassAlla;
 import org.bukkit.Bukkit;
@@ -27,15 +26,13 @@ public class onPlayerJoinEvent implements Listener {
         }
 
         JSONObject json = initUserJSON(e.getPlayer());
-        Bukkit.getScheduler().runTaskAsynchronously(KrassAlla.plugin, new Runnable() {
-            @Override
-            public void run() {
-                if (!KrassAlla.logic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
-                    KrassAlla.logic.createUserinDatabase(e.getPlayer(), json);
-            }
+        Bukkit.getScheduler().runTaskAsynchronously(KrassAlla.plugin, () -> {
+            if (!KrassAlla.logic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
+                KrassAlla.logic.createUserinDatabase(e.getPlayer(), json);
         });
 
     }
+
     private JSONObject initUserJSON(Player e) {
         Path jsonpath = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder() + "/PlayerData/" + e.getUniqueId() + ".json");
         JSONObject json = new JSONObject();

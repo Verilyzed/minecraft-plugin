@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class DataSource {
     private static DataSource datasource;
-    private HikariDataSource hkds;
+    private final HikariDataSource hkds;
 
     private DataSource() {
         hkds = new HikariDataSource();
