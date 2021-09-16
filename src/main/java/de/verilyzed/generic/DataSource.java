@@ -17,6 +17,7 @@ public class DataSource {
         hkds.addDataSourceProperty("cachePrepStmts", "true");
         hkds.addDataSourceProperty("prepStmtCacheSize", "250");
         hkds.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        hkds.addDataSourceProperty("maxLifetime", "30000");
     }
 
     public static DataSource getInstance() {
