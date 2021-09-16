@@ -14,6 +14,8 @@ public class DataSource {
         hkds.setJdbcUrl("jdbc:mysql://52.232.13.152:443/minecraft");
         hkds.setUsername("root");
         hkds.setPassword("password");
+        hkds.addDataSourceProperty("maximumPoolSize", "8");
+        hkds.addDataSourceProperty("minimumIdle", "3");
         hkds.addDataSourceProperty("cachePrepStmts", "true");
         hkds.addDataSourceProperty("prepStmtCacheSize", "250");
         hkds.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");

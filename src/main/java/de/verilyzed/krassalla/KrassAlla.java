@@ -28,7 +28,6 @@ public final class KrassAlla extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         loadConfig();
-
         enableCommands();
 
         enableTabCompleter();

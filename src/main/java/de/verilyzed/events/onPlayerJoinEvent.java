@@ -25,6 +25,7 @@ public class onPlayerJoinEvent implements Listener {
             p.sendMessage("§8[§6+§8] §f" + e.getPlayer().getName());
             e.setJoinMessage("");
         }
+
         JSONObject json = initUserJSON(e.getPlayer());
         if (!KrassAlla.logic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
             KrassAlla.logic.createUserinDatabase(e.getPlayer(), json);
