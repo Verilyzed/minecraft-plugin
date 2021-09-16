@@ -27,8 +27,13 @@ public class onPlayerJoinEvent implements Listener {
         }
 
         JSONObject json = initUserJSON(e.getPlayer());
-        if (!KrassAlla.logic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
-            KrassAlla.logic.createUserinDatabase(e.getPlayer(), json);
+        Bukkit.getScheduler().runTaskAsynchronously(KrassAlla.plugin, new Runnable() {
+            @Override
+            public void run() {
+                if (!KrassAlla.logic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
+                    KrassAlla.logic.createUserinDatabase(e.getPlayer(), json);
+            }
+        });
 
     }
     private JSONObject initUserJSON(Player e) {
