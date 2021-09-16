@@ -11,9 +11,9 @@ public class DataSource {
 
     private DataSource() {
         hkds = new HikariDataSource();
-        hkds.setJdbcUrl("jdbc:mysql://52.232.13.152:443/minecraft");
+        hkds.setJdbcUrl("jdbc:mysql://localhost:3306/minecraft");
         hkds.setUsername("root");
-        hkds.setPassword("password");
+        hkds.setPassword("MyNewPass");
         hkds.addDataSourceProperty("maximumPoolSize", "8");
         hkds.addDataSourceProperty("minimumIdle", "3");
         hkds.addDataSourceProperty("cachePrepStmts", "true");
