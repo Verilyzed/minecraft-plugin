@@ -1,7 +1,8 @@
 package de.verilyzed.generic;
 
-import com.zaxxer.hikari.pool.HikariPool;
+import co.aikar.idb.DB;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -10,25 +11,17 @@ import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class BusinessLogic {
-    //public DatabaseHandler db;
 
     public BusinessLogic() {
-        //b = new DatabaseHandler();
     }
 
     public int getMoney(String name) {
-        DatabaseHandler db = new DatabaseHandler();
-        String abfrage = "SELECT money FROM users WHERE name='" + name + "';";
         int ret = -1;
-        try (
-                ResultSet rs = db.executeQuery(abfrage)
-        ) {
-            rs.next();
-            ret = rs.getInt(1);
+        try {
+            ret = DB.getFirstColumn("SELECT money FROM users WHERE name= ?", name);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        db.close();
         return ret;
     }
 
@@ -59,35 +52,20 @@ public class BusinessLogic {
     }
 
     public boolean updateEntry(String field, String value, String cond, String condValue, String table) {
-        DatabaseHandler db = new DatabaseHandler();
-        String abfrage = "UPDATE " + table + " SET " + field + "= '" + value + "' WHERE " + cond + " = '" + condValue + "';";
-        abfrage = String.format("UPDATE %s SET %s = '%s' WHERE %s = '%s';", table, field, value, condValue, condValue);
-        boolean ret = db.executeUpdate(abfrage);
-        db.close();
-        return ret;
+        DB.executeUpdateAsync("UPDATE ? SET ? = '?' WHERE ? = '?'", table, field, value, cond, condValue);
+        return true;
     }
 
     public boolean checkUserExistsInDB(UUID uuid) {
-        DatabaseHandler db = new DatabaseHandler();
-
         try {
-            ResultSet rs = db.executeQuery("SELECT COUNT(*) AS c FROM users WHERE uuid = '" + uuid.toString() + "';");
-
-            if (rs.next()) {
-                return rs.getInt(1) != 0;
-            }
-
-            db.close();
-
-            return true;
+            return (int)DB.getFirstColumn("SELECT COUNT(*) AS c FROM users WHERE uuid = '?'", uuid) != 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-
-        return false;
     }
 
-    public boolean createUserinDatabase(Player p, JSONObject jsonObject) {
+    public boolean createUserinDatabase(@NotNull Player p, @NotNull JSONObject jsonObject) {
         return insertEntry("money, backpack, uuid, name", jsonObject.get("money") + ", '" + jsonObject.get("backpack") + "', '" + p.getUniqueId() + "', '" + p.getName(), "users");
     }
 

@@ -1,14 +1,14 @@
 package de.verilyzed.krassalla;
 
+import co.aikar.idb.BukkitDB;
+import co.aikar.idb.Database;
 import de.verilyzed.commands.CommandExecuter;
 import de.verilyzed.events.onInventoryCloseEvent;
 import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
 import de.verilyzed.generic.BusinessLogic;
-import de.verilyzed.generic.DataSource;
 import de.verilyzed.tabcompleter.JsonTabCompleter;
 import de.verilyzed.tabcompleter.MoneyTabCompleter;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -20,8 +20,9 @@ import java.util.Objects;
 public final class KrassAlla extends JavaPlugin {
 
     public static String PREFIX;
-    public static DataSource ds;
+//    public static DataSource ds;
     public static BusinessLogic logic;
+    Database db;
     public static String dataFolder;
     public static JavaPlugin plugin;
 
@@ -38,11 +39,7 @@ public final class KrassAlla extends JavaPlugin {
         enableTabCompleter();
 
         enableListener();
-
-        ds = DataSource.getInstance();
-
-        if (ds == null)
-            System.out.println("DS IS NULL");
+        db = BukkitDB.createHikariDatabase(this, "root", "MyNewPass", "minecraft", "localhost:3306");
 
         logic = new BusinessLogic();
         log("Plugin loaded.");
@@ -86,7 +83,6 @@ public final class KrassAlla extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        ds.close();
-        ds = null;
+
     }
 }
