@@ -2,6 +2,8 @@ package de.verilyzed.events;
 
 import de.verilyzed.generic.FileManager;
 import de.verilyzed.krassalla.KrassAlla;
+import de.verilyzed.persistence.model.User;
+import de.verilyzed.service.UserService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,10 +29,9 @@ public class onPlayerJoinEvent implements Listener {
 
         JSONObject json = initUserJSON(e.getPlayer());
         Bukkit.getScheduler().runTaskAsynchronously(KrassAlla.plugin, () -> {
-            if (!KrassAlla.logic.checkUserExistsInDB(e.getPlayer().getUniqueId()))
-                KrassAlla.logic.createUserinDatabase(e.getPlayer(), json);
+            User user = new User(e.getPlayer().getName(), e.getPlayer().getUniqueId().toString(), 100, new JSONObject());
+            UserService.ensureUserExists(user);
         });
-
     }
 
     private JSONObject initUserJSON(Player e) {
