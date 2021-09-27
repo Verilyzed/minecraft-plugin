@@ -3,6 +3,7 @@ package de.verilyzed.persistence.repository;
 import co.aikar.idb.DB;
 import co.aikar.idb.TransactionCallback;
 import de.verilyzed.persistence.model.User;
+import org.json.simple.JSONArray;
 
 import java.sql.SQLException;
 
@@ -17,7 +18,15 @@ public class UsersRepository {
         }
         return ret;
     }
-
+    public User getUser(String uuid) {
+        User user = null;
+        try {
+            user = new User(DB.getFirstRow("SELECT * FROM users WHERE uuid=?", uuid));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
     public boolean insertUser(User user) {
         DB.createTransactionAsync(stm -> {
             if (!stm.inTransaction()) {
@@ -39,12 +48,16 @@ public class UsersRepository {
         return false;
     }
 
-    public boolean getUserByUUID(String uuid) {
+    public boolean userExists(String uuid) {
         try {
             return (int)DB.getFirstColumn("SELECT COUNT(*) FROM users WHERE uuid = ?", uuid)==1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void updateBackpack(String uuid, JSONArray backpack) {
+        DB.executeUpdateAsync("UPDATE users SET backpack = ? WHERE uuid = ?", backpack.toJSONString(), uuid);
     }
 }

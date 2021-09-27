@@ -3,14 +3,12 @@ package de.verilyzed.service;
 import de.verilyzed.exceptions.MoneyFetchException;
 import de.verilyzed.persistence.model.User;
 import de.verilyzed.persistence.repository.UsersRepository;
-import org.bukkit.Bukkit;
-
+import org.json.simple.JSONArray;
 import java.sql.SQLException;
 
 public class UserService {
 
     private static UsersRepository usersRepository;
-
     public static int getMoney(String username) throws MoneyFetchException {
         int moneyResult = usersRepository.getMoneyForUsername(username);
         if (moneyResult == -1) {
@@ -38,9 +36,14 @@ public class UserService {
             return false;
         }
     }
-
+    public static JSONArray getBackpack(String uuid) {
+        return usersRepository.getUser(uuid).getBackpack();
+    }
+    public static void setBackpack(String uuid, JSONArray backpack) {
+        usersRepository.updateBackpack(uuid, backpack);
+    }
     public static void ensureUserExists(User user) {
-        if (!usersRepository.getUserByUUID(user.getUuid()))
+        if (!usersRepository.userExists(user.getUuid()))
             usersRepository.insertUser(user);
     }
 }

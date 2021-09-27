@@ -3,7 +3,7 @@ package de.verilyzed.krassalla;
 import co.aikar.idb.BukkitDB;
 import co.aikar.idb.Database;
 import de.verilyzed.commands.CommandExecuter;
-import de.verilyzed.events.onInventoryCloseEvent;
+import de.verilyzed.commands.backpack;
 import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
 import de.verilyzed.generic.BusinessLogic;
@@ -20,7 +20,6 @@ import java.util.Objects;
 public final class KrassAlla extends JavaPlugin {
 
     public static String PREFIX;
-//    public static DataSource ds;
     public static BusinessLogic logic;
     Database db;
     public static String dataFolder;
@@ -37,10 +36,8 @@ public final class KrassAlla extends JavaPlugin {
         enableCommands();
         plugin = this;
         enableTabCompleter();
-
         enableListener();
         db = BukkitDB.createHikariDatabase(this, "root", "MyNewPass", "minecraft", "localhost:3306");
-
         logic = new BusinessLogic();
         log("Plugin loaded.");
     }
@@ -48,17 +45,13 @@ public final class KrassAlla extends JavaPlugin {
     public void loadConfig() {
         getConfig().options().copyDefaults(true);
         saveConfig();
-
         Path path = Paths.get(KrassAlla.getPlugin(KrassAlla.class).getDataFolder() + "/PlayerData/");
-
         dataFolder = getDataFolder().toString();
-
         try {
             Files.createDirectories(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         PREFIX = this.getConfig().getString("Config.General.PREFIX");
     }
 
@@ -77,7 +70,7 @@ public final class KrassAlla extends JavaPlugin {
     public void enableListener() {
         getServer().getPluginManager().registerEvents(new onPlayerJoinEvent(), this);
         getServer().getPluginManager().registerEvents(new onPlayerQuitEvent(), this);
-        getServer().getPluginManager().registerEvents(new onInventoryCloseEvent(), this);
+        getServer().getPluginManager().registerEvents(new backpack(), this);
     }
 
     @Override
