@@ -46,5 +46,9 @@ public class UserService {
         if (!usersRepository.userExists(user.getUuid()))
             usersRepository.insertUser(user);
     }
+
+    public static void setUsersRepository(UsersRepository usersRepository) {
+        UserService.usersRepository = usersRepository;
+    }
 }
 

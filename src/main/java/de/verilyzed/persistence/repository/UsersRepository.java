@@ -34,7 +34,7 @@ public class UsersRepository {
             }
             try {
                 return stm.executeUpdateQuery("INSERT INTO users (uuid, name, money, backpack) " +
-                        "VALUES (?, ?, ?, ?)", user.getUuid(), user.getUsername(), user.getMoney(), user.getBackpack()) > 0;
+                        "VALUES (?, ?, ?, ?)", user.getUuid(), user.getUsername(), user.getMoney(), user.getBackpack().toJSONString()) > 0;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -50,7 +50,7 @@ public class UsersRepository {
 
     public boolean userExists(String uuid) {
         try {
-            return (int)DB.getFirstColumn("SELECT COUNT(*) FROM users WHERE uuid = ?", uuid)==1;
+            return ((long)DB.getFirstColumn("SELECT COUNT(*) FROM users WHERE uuid = ?", uuid))==1;
         } catch (SQLException e) {
             e.printStackTrace();
         }

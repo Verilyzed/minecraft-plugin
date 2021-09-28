@@ -4,9 +4,12 @@ import co.aikar.idb.BukkitDB;
 import co.aikar.idb.Database;
 import de.verilyzed.commands.CommandExecuter;
 import de.verilyzed.commands.backpack;
+import de.verilyzed.events.onInventoryCloseEvent;
 import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
 import de.verilyzed.generic.BusinessLogic;
+import de.verilyzed.persistence.repository.UsersRepository;
+import de.verilyzed.service.UserService;
 import de.verilyzed.tabcompleter.JsonTabCompleter;
 import de.verilyzed.tabcompleter.MoneyTabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,8 +40,9 @@ public final class KrassAlla extends JavaPlugin {
         plugin = this;
         enableTabCompleter();
         enableListener();
-        db = BukkitDB.createHikariDatabase(this, "root", "MyNewPass", "minecraft", "localhost:3306");
+        db = BukkitDB.createHikariDatabase(this, "root", "MyNewPass", "minecraft", "mariadb:3306");
         logic = new BusinessLogic();
+        UserService.setUsersRepository(new UsersRepository());
         log("Plugin loaded.");
     }
 
@@ -70,7 +74,7 @@ public final class KrassAlla extends JavaPlugin {
     public void enableListener() {
         getServer().getPluginManager().registerEvents(new onPlayerJoinEvent(), this);
         getServer().getPluginManager().registerEvents(new onPlayerQuitEvent(), this);
-        getServer().getPluginManager().registerEvents(new backpack(), this);
+        getServer().getPluginManager().registerEvents(new onInventoryCloseEvent(), this);
     }
 
     @Override
