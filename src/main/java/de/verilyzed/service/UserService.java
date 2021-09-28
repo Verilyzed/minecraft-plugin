@@ -4,6 +4,8 @@ import de.verilyzed.exceptions.MoneyFetchException;
 import de.verilyzed.persistence.model.User;
 import de.verilyzed.persistence.repository.UsersRepository;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.sql.SQLException;
 
 public class UserService {
@@ -36,10 +38,10 @@ public class UserService {
             return false;
         }
     }
-    public static JSONArray getBackpack(String uuid) {
+    public static JSONObject getBackpack(String uuid) {
         return usersRepository.getUser(uuid).getBackpack();
     }
-    public static void setBackpack(String uuid, JSONArray backpack) {
+    public static void setBackpack(String uuid, JSONObject backpack) {
         usersRepository.updateBackpack(uuid, backpack);
     }
     public static void ensureUserExists(User user) {

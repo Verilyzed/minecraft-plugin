@@ -9,6 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+
 
 public class onPlayerJoinEvent implements Listener {
     @EventHandler
@@ -20,6 +23,7 @@ public class onPlayerJoinEvent implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(KrassAlla.plugin, () -> {
             User user = new User(e.getPlayer().getName(), e.getPlayer().getUniqueId().toString());
             UserService.ensureUserExists(user);
+            KrassAlla.log.log(new LogRecord(Level.FINE, "User now exists in DB"));
         });
     }
 }

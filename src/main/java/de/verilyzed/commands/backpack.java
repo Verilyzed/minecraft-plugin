@@ -1,5 +1,6 @@
 package de.verilyzed.commands;
 
+import com.google.gson.JsonObject;
 import de.verilyzed.krassalla.KrassAlla;
 import de.verilyzed.service.UserService;
 import net.kyori.adventure.text.Component;
@@ -13,6 +14,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 public class backpack {
 
@@ -23,17 +29,18 @@ public class backpack {
                 Player p = (Player) sender;
                 p.sendMessage(KrassAlla.PREFIX + "Opening backpack...");
                 Inventory inv = Bukkit.createInventory(p, InventoryType.CHEST, Component.text("Backpack "));
-                JSONArray jsonArray = UserService.getBackpack(p.getUniqueId().toString());
-                p.sendMessage(jsonArray.toJSONString());
-                for (Object object : jsonArray) {
-                    JSONArray itemArray = (JSONArray) object;
-                    ItemStack itemStack = new ItemStack(Material.valueOf((String) itemArray.get(1)));
-                    itemStack.setAmount(Integer.parseInt(itemArray.get(2).toString()));
-                    inv.setItem(Integer.parseInt(itemArray.get(0).toString()), itemStack);
+                JSONObject jsonObject = UserService.getBackpack(p.getUniqueId().toString());
+                KrassAlla.log.log(new LogRecord(Level.FINE, jsonObject.toJSONString()));
+                for (String key : (Iterable<String>) jsonObject.keySet()) {
+                    if (jsonObject.get(key) instanceof JSONObject) {
+                        JSONObject help = (JSONObject) jsonObject.get(key);
+                        ItemStack itemStack = new ItemStack(Material.valueOf((String) help.get("material")));
+                        itemStack.setAmount(Integer.parseInt(help.get("amount").toString()));
+                        inv.setItem(Integer.parseInt(help.get("id").toString()), itemStack);
+                    }
                 }
                 p.openInventory(inv);
             }
         }
     }
-
 }

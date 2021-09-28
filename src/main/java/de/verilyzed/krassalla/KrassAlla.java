@@ -3,7 +3,6 @@ package de.verilyzed.krassalla;
 import co.aikar.idb.BukkitDB;
 import co.aikar.idb.Database;
 import de.verilyzed.commands.CommandExecuter;
-import de.verilyzed.commands.backpack;
 import de.verilyzed.events.onInventoryCloseEvent;
 import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
@@ -12,6 +11,7 @@ import de.verilyzed.persistence.repository.UsersRepository;
 import de.verilyzed.service.UserService;
 import de.verilyzed.tabcompleter.JsonTabCompleter;
 import de.verilyzed.tabcompleter.MoneyTabCompleter;
+import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 public final class KrassAlla extends JavaPlugin {
-
+    public static PluginLogger log;
     public static String PREFIX;
     public static BusinessLogic logic;
     Database db;
@@ -43,6 +43,7 @@ public final class KrassAlla extends JavaPlugin {
         db = BukkitDB.createHikariDatabase(this, "root", "MyNewPass", "minecraft", "mariadb:3306");
         logic = new BusinessLogic();
         UserService.setUsersRepository(new UsersRepository());
+        log = new PluginLogger(this);
         log("Plugin loaded.");
     }
 

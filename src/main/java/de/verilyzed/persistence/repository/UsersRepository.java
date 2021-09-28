@@ -4,6 +4,7 @@ import co.aikar.idb.DB;
 import co.aikar.idb.TransactionCallback;
 import de.verilyzed.persistence.model.User;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.sql.SQLException;
 
@@ -57,7 +58,7 @@ public class UsersRepository {
         return false;
     }
 
-    public void updateBackpack(String uuid, JSONArray backpack) {
+    public void updateBackpack(String uuid, JSONObject backpack) {
         DB.executeUpdateAsync("UPDATE users SET backpack = ? WHERE uuid = ?", backpack.toJSONString(), uuid);
     }
 }

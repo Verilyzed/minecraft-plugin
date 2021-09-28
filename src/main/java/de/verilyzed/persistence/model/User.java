@@ -3,6 +3,7 @@ package de.verilyzed.persistence.model;
 import co.aikar.idb.DbRow;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -10,8 +11,8 @@ public class User {
     private String uuid;
     private String username;
     private int money;
-    private JSONArray backpack;
-    public User(@NotNull String name, @NotNull String uuid, int money, JSONArray backpack) {
+    private JSONObject backpack;
+    public User(@NotNull String name, @NotNull String uuid, int money, JSONObject backpack) {
         this.username = name;
         this.uuid = uuid;
         this.money = money;
@@ -21,7 +22,7 @@ public class User {
         this.username = name;
         this.uuid = uuid;
         this.money = 100;
-        this.backpack = new JSONArray();
+        this.backpack = new JSONObject();
     }
 
     public User(DbRow firstRow) {
@@ -30,11 +31,13 @@ public class User {
         this.money = firstRow.getInt("money");
         try {
             JSONParser parser = new JSONParser();
-            this.backpack = new JSONArray();
-            backpack.add(parser.parse(firstRow.getString("backpack")));
+            this.backpack = new JSONObject();
+            backpack = (JSONObject) (parser.parse(firstRow.getString("backpack")));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println(backpack.toJSONString());
+        System.out.println(username);
     }
 
     public String getUuid() {
@@ -61,11 +64,11 @@ public class User {
         this.money = money;
     }
 
-    public JSONArray getBackpack() {
+    public JSONObject getBackpack() {
         return backpack;
     }
 
-    public void setBackpack(JSONArray backpack) {
+    public void setBackpack(JSONObject backpack) {
         this.backpack = backpack;
     }
 }
