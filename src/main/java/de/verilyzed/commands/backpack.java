@@ -1,6 +1,5 @@
 package de.verilyzed.commands;
 
-import com.google.gson.JsonObject;
 import de.verilyzed.krassalla.KrassAlla;
 import de.verilyzed.service.UserService;
 import net.kyori.adventure.text.Component;
@@ -13,10 +12,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 

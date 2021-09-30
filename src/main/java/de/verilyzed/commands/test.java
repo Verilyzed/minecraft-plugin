@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.logging.Level;
+
 public class test {
 
     public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -17,7 +19,7 @@ public class test {
 
             }
         } else {
-            KrassAlla.log("You can't execute this command in console.");
+            KrassAlla.log.log(Level.ALL,"You can't execute this command in console.");
         }
 
     }

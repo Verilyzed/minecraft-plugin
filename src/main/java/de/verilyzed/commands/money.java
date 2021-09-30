@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 
-
 public class money {
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

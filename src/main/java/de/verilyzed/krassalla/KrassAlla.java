@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public final class KrassAlla extends JavaPlugin {
     public static PluginLogger log;
@@ -27,10 +28,6 @@ public final class KrassAlla extends JavaPlugin {
     Database db;
     public static String dataFolder;
     public static JavaPlugin plugin;
-
-    public static void log(String text) {
-        System.out.println(PREFIX + text);
-    }
 
     @Override
     public void onEnable() {
@@ -44,7 +41,7 @@ public final class KrassAlla extends JavaPlugin {
         logic = new BusinessLogic();
         UserService.setUsersRepository(new UsersRepository());
         log = new PluginLogger(this);
-        log("Plugin loaded.");
+        log.log(Level.ALL,"Plugin loaded.");
     }
 
     public void loadConfig() {

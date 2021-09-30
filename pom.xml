@@ -52,6 +52,10 @@
 
     <repositories>
         <repository>
+            <id>scarsz</id>
+            <url>https://nexus.scarsz.me/content/groups/public/</url>
+        </repository>
+        <repository>
             <id>papermc-repo</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
@@ -72,6 +76,11 @@
         </repository>
     </distributionManagement>
     <dependencies>
+        <dependency>
+            <groupId>ninja.amp</groupId>
+            <artifactId>ampmenus</artifactId>
+            <version>1.10.0</version>
+        </dependency>
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>

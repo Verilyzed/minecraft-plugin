@@ -13,10 +13,12 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 public class onInventoryCloseEvent implements Listener {
+
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
+        if(!(e.getView().title() instanceof TextComponent))
+            return;
         TextComponent tc = (TextComponent) e.getView().title();
-        System.out.println(tc.content().toCharArray());
         if (!tc.content().contains("Backpack")) {
             return;
         }
