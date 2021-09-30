@@ -25,7 +25,7 @@ public class User {
         this.backpack = new JSONObject();
     }
 
-    public User(DbRow firstRow) {
+    public User(@NotNull DbRow firstRow) {
         this.username = firstRow.getString("name");
         this.uuid = firstRow.getString("uuid");
         this.money = firstRow.getInt("money");

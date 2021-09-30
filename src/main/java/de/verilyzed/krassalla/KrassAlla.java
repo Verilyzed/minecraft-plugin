@@ -7,7 +7,9 @@ import de.verilyzed.events.onInventoryCloseEvent;
 import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
 import de.verilyzed.generic.BusinessLogic;
+import de.verilyzed.persistence.repository.BountyRepository;
 import de.verilyzed.persistence.repository.UsersRepository;
+import de.verilyzed.service.BountyService;
 import de.verilyzed.service.UserService;
 import de.verilyzed.tabcompleter.JsonTabCompleter;
 import de.verilyzed.tabcompleter.MoneyTabCompleter;
@@ -40,6 +42,7 @@ public final class KrassAlla extends JavaPlugin {
         db = BukkitDB.createHikariDatabase(this, "root", "MyNewPass", "minecraft", "mariadb:3306");
         logic = new BusinessLogic();
         UserService.setUsersRepository(new UsersRepository());
+        BountyService.setBountyRepository(new BountyRepository());
         log = new PluginLogger(this);
         log.log(Level.ALL,"Plugin loaded.");
     }

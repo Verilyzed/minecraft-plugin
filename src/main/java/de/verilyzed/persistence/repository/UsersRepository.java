@@ -7,6 +7,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class UsersRepository {
 
@@ -19,10 +20,19 @@ public class UsersRepository {
         }
         return ret;
     }
-    public User getUser(String uuid) {
+    public User getUserbyUUID(String uuid) {
         User user = null;
         try {
             user = new User(DB.getFirstRow("SELECT * FROM users WHERE uuid=?", uuid));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    public User getUserbyName(String name) {
+        User user = null;
+        try {
+            user = new User(DB.getFirstRow("SELECT * FROM users WHERE name=?", name));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,5 +70,17 @@ public class UsersRepository {
 
     public void updateBackpack(String uuid, JSONObject backpack) {
         DB.executeUpdateAsync("UPDATE users SET backpack = ? WHERE uuid = ?", backpack.toJSONString(), uuid);
+    }
+
+    public UUID getUuid(String name) {
+        UUID uuid = null;
+
+        try {
+            uuid = UUID.fromString(DB.getFirstColumn("SELECT uuid FROM users WHERE name = ?", name));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return uuid;
     }
 }
