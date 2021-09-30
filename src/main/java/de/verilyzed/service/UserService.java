@@ -1,6 +1,7 @@
 package de.verilyzed.service;
 
 import de.verilyzed.exceptions.MoneyFetchException;
+import de.verilyzed.exceptions.MoneySetException;
 import de.verilyzed.persistence.model.User;
 import de.verilyzed.persistence.repository.UsersRepository;
 import org.json.simple.JSONObject;
@@ -24,24 +25,23 @@ public class UserService {
         return usersRepository.updateMoneyForUsername(money, username);
     }
 
-    public static boolean sendMoney(String nameSender, String nameReceiver, int Betrag) throws SQLException {
-        try {
+    public static void sendMoney(String nameSender, String nameReceiver, int Betrag) throws MoneySetException, MoneyFetchException {
+        usersRepository.exchangeMoney(Betrag, nameSender, nameReceiver);
+        if (false) {
             int moneySender = getMoney(nameSender);
             int moneyReceiver = getMoney(nameReceiver);
             if (Betrag > 0) {
                 moneySender -= Betrag;
                 moneyReceiver += Betrag;
             } else {
-                return false;
+                return;
             }
             boolean res1 = usersRepository.updateMoneyForUsername(moneySender, nameSender);
             boolean res2 = usersRepository.updateMoneyForUsername(moneyReceiver, nameReceiver);
             if (res1 && res2) {
-                return true;
+                return;
             }
-            throw new SQLException("Money cannot be set");
-        } catch (MoneyFetchException e) {
-            return false;
+            throw new MoneySetException("Money cannot be set");
         }
     }
 
@@ -62,7 +62,7 @@ public class UserService {
         return usersRepository.getUserbyName(name);
     }
 
-    public static UUID getUuidByName(String name) {
+    public static String getUuidByName(String name) {
         return usersRepository.getUuid(name);
     }
 

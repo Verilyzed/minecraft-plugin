@@ -1,22 +1,24 @@
 package de.verilyzed.persistence.repository;
 
 import co.aikar.idb.DB;
-import co.aikar.idb.TransactionCallback;
+import de.verilyzed.exceptions.MoneyFetchException;
+import de.verilyzed.krassalla.KrassAlla;
 import de.verilyzed.persistence.model.User;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.sql.SQLException;
-import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 public class UsersRepository {
 
-    public int getMoneyForUsername(String username) {
+    public int getMoneyForUsername(String username) throws MoneyFetchException {
         int ret = -1;
         try {
             ret = DB.getFirstColumn("SELECT money FROM users WHERE name= ?", username);
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new MoneyFetchException("money cannot be fetched from DB");
         }
         return ret;
     }
@@ -38,6 +40,7 @@ public class UsersRepository {
         }
         return user;
     }
+
     public boolean insertUser(User user) {
         DB.createTransactionAsync(stm -> {
             if (!stm.inTransaction()) {
@@ -59,9 +62,31 @@ public class UsersRepository {
         return false;
     }
 
+    public void exchangeMoney(int money, String usernameSender, String usernameReceiver) throws MoneyFetchException {
+        int betragSender = getMoneyForUsername(usernameSender) - money;
+        int betragReceiver = getMoneyForUsername(usernameReceiver) + money;
+        if (betragSender < 0 || money <= 0)
+            throw new IllegalStateException("Money has to be positive. A User cannot send more than he has.");
+        DB.createTransactionAsync(stm -> {
+                    if (!stm.inTransaction()) {
+                        throw new IllegalStateException("Currency Operations require a transaction");
+                    }
+                    try {
+                        stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", betragSender, usernameSender);
+                        stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", betragReceiver, usernameReceiver);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    return false;
+                },
+                () -> KrassAlla.log.log(new LogRecord(Level.INFO, "Es wurde Geld überwiesen.")),
+                () -> KrassAlla.log.log(new LogRecord(Level.INFO, "Money could not be transferred. No Records have changed"))
+        );
+    }
+
     public boolean userExists(String uuid) {
         try {
-            return ((long)DB.getFirstColumn("SELECT COUNT(*) FROM users WHERE uuid = ?", uuid))==1;
+            return ((long) DB.getFirstColumn("SELECT COUNT(*) FROM users WHERE uuid = ?", uuid)) == 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,11 +97,11 @@ public class UsersRepository {
         DB.executeUpdateAsync("UPDATE users SET backpack = ? WHERE uuid = ?", backpack.toJSONString(), uuid);
     }
 
-    public UUID getUuid(String name) {
-        UUID uuid = null;
+    public String getUuid(String name) {
+        String uuid = null;
 
         try {
-            uuid = UUID.fromString(DB.getFirstColumn("SELECT uuid FROM users WHERE name = ?", name));
+            uuid = DB.getFirstColumn("SELECT uuid FROM users WHERE name = ?", name).toString();
         } catch (SQLException e) {
             e.printStackTrace();
         }

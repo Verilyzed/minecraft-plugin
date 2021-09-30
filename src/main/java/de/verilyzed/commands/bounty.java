@@ -41,7 +41,7 @@ public class bounty {
 
                         p.sendMessage("A:" + args[1]);
 
-                        UUID uuidReceiver = UserService.getUuidByName(args[1]);
+                        String uuidReceiver = UserService.getUuidByName(args[1]);
                         if (uuidReceiver == null) {
                             p.sendMessage(KrassAlla.PREFIX + "§cDieser User war bis jetzt noch nie auf dem Server.");
                             return true;
