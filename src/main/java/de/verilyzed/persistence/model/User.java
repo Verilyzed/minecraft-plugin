@@ -36,8 +36,6 @@ public class User {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println(backpack.toJSONString());
-        System.out.println(username);
     }
 
     public String getUuid() {

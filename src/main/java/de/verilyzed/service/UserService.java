@@ -3,7 +3,6 @@ package de.verilyzed.service;
 import de.verilyzed.exceptions.MoneyFetchException;
 import de.verilyzed.persistence.model.User;
 import de.verilyzed.persistence.repository.UsersRepository;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.sql.SQLException;
@@ -11,6 +10,7 @@ import java.sql.SQLException;
 public class UserService {
 
     private static UsersRepository usersRepository;
+
     public static int getMoney(String username) throws MoneyFetchException {
         int moneyResult = usersRepository.getMoneyForUsername(username);
         if (moneyResult == -1) {
@@ -31,19 +31,23 @@ public class UserService {
             }
             boolean res1 = usersRepository.updateMoneyForUsername(moneySender, nameSender);
             boolean res2 = usersRepository.updateMoneyForUsername(moneyReceiver, nameReceiver);
-            if (res1 && res2)
+            if (res1 && res2) {
                 return true;
+            }
             throw new SQLException("Money cannot be set");
         } catch (MoneyFetchException e) {
             return false;
         }
     }
+
     public static JSONObject getBackpack(String uuid) {
         return usersRepository.getUser(uuid).getBackpack();
     }
+
     public static void setBackpack(String uuid, JSONObject backpack) {
         usersRepository.updateBackpack(uuid, backpack);
     }
+
     public static void ensureUserExists(User user) {
         if (!usersRepository.userExists(user.getUuid()))
             usersRepository.insertUser(user);
