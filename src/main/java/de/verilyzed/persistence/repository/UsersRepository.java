@@ -7,6 +7,7 @@ import de.verilyzed.persistence.model.User;
 import org.json.simple.JSONObject;
 
 import java.sql.SQLException;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -67,6 +68,7 @@ public class UsersRepository {
         int betragReceiver = getMoneyForUsername(usernameReceiver) + money;
         if (betragSender < 0 || money <= 0)
             throw new IllegalStateException("Money has to be positive. A User cannot send more than he has.");
+        // manual commit and close is not necessary. The createTransactionAsync commits and autocloses depending on return value
         DB.createTransactionAsync(stm -> {
                     if (!stm.inTransaction()) {
                         throw new IllegalStateException("Currency Operations require a transaction");
@@ -75,11 +77,11 @@ public class UsersRepository {
                         stm.startTransaction();
                         stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", betragSender, usernameSender);
                         stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", betragReceiver, usernameReceiver);
-                        stm.commit();
+                        return true;
                     } catch (SQLException e) {
                         e.printStackTrace();
+                        return false;
                     }
-                    return false;
                 },
                 () -> KrassAlla.log.log(new LogRecord(Level.INFO, "Es wurde Geld überwiesen.")),
                 () -> KrassAlla.log.log(new LogRecord(Level.INFO, "Money could not be transferred. No Records have changed"))
