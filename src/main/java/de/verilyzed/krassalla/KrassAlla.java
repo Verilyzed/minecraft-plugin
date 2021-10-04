@@ -4,6 +4,7 @@ import co.aikar.idb.BukkitDB;
 import co.aikar.idb.Database;
 import de.verilyzed.commands.CommandExecuter;
 import de.verilyzed.events.onInventoryCloseEvent;
+import de.verilyzed.events.onPlayerDeathEvent;
 import de.verilyzed.events.onPlayerJoinEvent;
 import de.verilyzed.events.onPlayerQuitEvent;
 import de.verilyzed.persistence.repository.BountyRepository;
@@ -73,6 +74,7 @@ public final class KrassAlla extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new onPlayerJoinEvent(), this);
         getServer().getPluginManager().registerEvents(new onPlayerQuitEvent(), this);
         getServer().getPluginManager().registerEvents(new onInventoryCloseEvent(), this);
+        getServer().getPluginManager().registerEvents(new onPlayerDeathEvent(), this);
     }
 
     @Override

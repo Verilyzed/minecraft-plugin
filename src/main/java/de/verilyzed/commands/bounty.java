@@ -63,7 +63,7 @@ public class bounty {
 
                         money -= amount;
 
-                        UserService.setMoney(money, p.getName());
+                        UserService.setMoneyByName(money, p.getName());
 
                         Bounty bounty = new Bounty(uuidReceiver, amount);
                         BountyService.addBounty(bounty);

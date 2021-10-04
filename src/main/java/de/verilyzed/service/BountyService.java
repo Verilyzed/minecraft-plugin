@@ -14,6 +14,10 @@ public class BountyService {
         bountyRepository.insertBounty(bounty);
     }
 
+    public static Bounty getBountyByUuid(String uuid) {
+        return bountyRepository.getBounty(uuid);
+    }
+
     public static void removeBountyByName(String name) {
         bountyRepository.removeBounty(name);
     }

@@ -21,7 +21,7 @@ public class UserService {
         return moneyResult;
     }
 
-    public static boolean setMoney(int money, String username) {
+    public static boolean setMoneyByName(int money, String username) {
         return usersRepository.updateMoneyForUsername(money, username);
     }
 
@@ -58,7 +58,7 @@ public class UserService {
             usersRepository.insertUser(user);
     }
 
-    public static User getUserbyName(String name) {
+    public static User getUserByName(String name) {
         return usersRepository.getUserbyName(name);
     }
 

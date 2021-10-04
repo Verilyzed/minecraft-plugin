@@ -18,10 +18,10 @@ public class BountyRepository {
         return ret;
     }
 
-    public Bounty getBounty(UUID uuid) {
+    public Bounty getBounty(String uuid) {
         Bounty bounty = null;
         try {
-            bounty = new Bounty(DB.getFirstRow("SELECT * FROM bounty WHERE uuid=?", uuid.toString()));
+            bounty = new Bounty(DB.getFirstRow("SELECT uuid, SUM(money) as money FROM bounty WHERE uuid=?", uuid));
         } catch (SQLException e) {
             e.printStackTrace();
         }
