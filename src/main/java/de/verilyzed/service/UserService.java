@@ -2,6 +2,7 @@ package de.verilyzed.service;
 
 import de.verilyzed.exceptions.MoneyFetchException;
 import de.verilyzed.exceptions.MoneySetException;
+import de.verilyzed.exceptions.UpdateFailedException;
 import de.verilyzed.persistence.model.User;
 import de.verilyzed.persistence.repository.UsersRepository;
 import org.json.simple.JSONObject;
@@ -21,28 +22,13 @@ public class UserService {
         return moneyResult;
     }
 
-    public static boolean setMoney(int money, String username) {
-        return usersRepository.updateMoneyForUsername(money, username);
+    public static void setMoney(int money, String username) throws UpdateFailedException {
+        usersRepository.updateMoneyForUsername(money, username);
+                throw new UpdateFailedException("User could not be written to DB.");
     }
 
     public static void sendMoney(String nameSender, String nameReceiver, int Betrag) throws MoneySetException, MoneyFetchException {
         usersRepository.exchangeMoney(Betrag, nameSender, nameReceiver);
-        if (false) {
-            int moneySender = getMoney(nameSender);
-            int moneyReceiver = getMoney(nameReceiver);
-            if (Betrag > 0) {
-                moneySender -= Betrag;
-                moneyReceiver += Betrag;
-            } else {
-                return;
-            }
-            boolean res1 = usersRepository.updateMoneyForUsername(moneySender, nameSender);
-            boolean res2 = usersRepository.updateMoneyForUsername(moneyReceiver, nameReceiver);
-            if (res1 && res2) {
-                return;
-            }
-            throw new MoneySetException("Money cannot be set");
-        }
     }
 
     public static JSONObject getBackpack(String uuid) {

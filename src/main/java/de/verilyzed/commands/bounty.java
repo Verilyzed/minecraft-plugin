@@ -1,6 +1,7 @@
 package de.verilyzed.commands;
 
 import de.verilyzed.exceptions.MoneyFetchException;
+import de.verilyzed.exceptions.UpdateFailedException;
 import de.verilyzed.krassalla.KrassAlla;
 import de.verilyzed.persistence.model.Bounty;
 import de.verilyzed.persistence.model.User;
@@ -63,7 +64,12 @@ public class bounty {
 
                         money -= amount;
 
-                        UserService.setMoney(money, p.getName());
+                        try {
+                            UserService.setMoney(money, p.getName());
+                        } catch (UpdateFailedException e) {
+                            e.printStackTrace();
+                            p.sendMessage("Money couldnt be set.");
+                        }
 
                         Bounty bounty = new Bounty(uuidReceiver, amount);
                         BountyService.addBounty(bounty);

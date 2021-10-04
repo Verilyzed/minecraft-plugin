@@ -42,7 +42,7 @@ public class UsersRepository {
         return user;
     }
 
-    public boolean insertUser(User user) {
+    public void insertUser(User user) {
         DB.createTransactionAsync(stm -> {
             if (!stm.inTransaction()) {
                 throw new IllegalStateException("Currency Operations require a transaction");
@@ -55,12 +55,11 @@ public class UsersRepository {
             }
             return false;
         });
-        return true;
     }
 
-    public boolean updateMoneyForUsername(int money, String username) {
-        DB.executeUpdateAsync("UPDATE users SET money = ? WHERE name = ?", money, username);
-        return false;
+    public void updateMoneyForUsername(int money, String username) {
+        CompletableFuture<Integer> ret = DB.executeUpdateAsync("UPDATE users SET money = ? WHERE name = ?", money, username);
+
     }
 
     public void exchangeMoney(int money, String usernameSender, String usernameReceiver) throws MoneyFetchException {
