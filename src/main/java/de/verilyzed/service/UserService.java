@@ -2,6 +2,7 @@ package de.verilyzed.service;
 
 import de.verilyzed.exceptions.MoneyFetchException;
 import de.verilyzed.exceptions.MoneySetException;
+import de.verilyzed.exceptions.UpdateFailedException;
 import de.verilyzed.persistence.model.User;
 import de.verilyzed.persistence.repository.UsersRepository;
 import org.json.simple.JSONObject;

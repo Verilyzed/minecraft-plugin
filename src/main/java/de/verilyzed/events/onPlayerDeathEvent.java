@@ -1,5 +1,6 @@
 package de.verilyzed.events;
 
+import de.verilyzed.exceptions.UpdateFailedException;
 import de.verilyzed.krassalla.KrassAlla;
 import de.verilyzed.persistence.model.Bounty;
 import de.verilyzed.persistence.model.User;
@@ -9,6 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 public class onPlayerDeathEvent implements Listener {
     @EventHandler
@@ -23,12 +27,18 @@ public class onPlayerDeathEvent implements Listener {
 
         Player killer = p.getKiller();
         assert killer != null;
-        killer.sendMessage(KrassAlla.PREFIX + "You killed " + p.getName() + " and received a reward!");
 
-        User user = UserService.getUserByName(killer.getName());
-        int money = user.getMoney() + bounty.getMoney();
+        try {
+            User user = UserService.getUserByName(killer.getName());
+            int money = user.getMoney() + bounty.getMoney();
 
-        UserService.setMoneyByName(money, killer.getName());
+            UserService.setMoney(money, killer.getName());
+
+            killer.sendMessage(KrassAlla.PREFIX + "You killed " + p.getName() + " and received a reward!");
+        } catch (UpdateFailedException e) {
+            KrassAlla.log.log(new LogRecord(Level.WARNING, "onPlayerDeathEvent error: UpdateFailedException"));
+            e.printStackTrace();
+        }
 
         BountyService.removeBountyByName(p.getName());
     }
