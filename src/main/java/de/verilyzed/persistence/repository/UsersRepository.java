@@ -13,7 +13,7 @@ import java.util.logging.LogRecord;
 public class UsersRepository {
 
     public int getMoneyForUsername(String username) throws MoneyFetchException {
-        int ret = -1;
+        int ret;
         try {
             ret = DB.getFirstColumn("SELECT money FROM users WHERE name= ?", username);
         } catch (SQLException e) {
@@ -72,8 +72,10 @@ public class UsersRepository {
                         throw new IllegalStateException("Currency Operations require a transaction");
                     }
                     try {
+                        stm.startTransaction();
                         stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", betragSender, usernameSender);
                         stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", betragReceiver, usernameReceiver);
+                        stm.commit();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
