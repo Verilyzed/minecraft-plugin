@@ -7,13 +7,14 @@ import de.verilyzed.persistence.model.User;
 import org.json.simple.JSONObject;
 
 import java.sql.SQLException;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 public class UsersRepository {
 
     public int getMoneyForUsername(String username) throws MoneyFetchException {
-        int ret = -1;
+        int ret;
         try {
             ret = DB.getFirstColumn("SELECT money FROM users WHERE name= ?", username);
         } catch (SQLException e) {
@@ -41,7 +42,7 @@ public class UsersRepository {
         return user;
     }
 
-    public boolean insertUser(User user) {
+    public void insertUser(User user) {
         DB.createTransactionAsync(stm -> {
             if (!stm.inTransaction()) {
                 throw new IllegalStateException("Currency Operations require a transaction");
@@ -54,12 +55,11 @@ public class UsersRepository {
             }
             return false;
         });
-        return true;
     }
 
-    public boolean updateMoneyForUsername(int money, String username) {
-        DB.executeUpdateAsync("UPDATE users SET money = ? WHERE name = ?", money, username);
-        return false;
+    public void updateMoneyForUsername(int money, String username) {
+        CompletableFuture<Integer> ret = DB.executeUpdateAsync("UPDATE users SET money = ? WHERE name = ?", money, username);
+
     }
 
     public void exchangeMoney(int money, String usernameSender, String usernameReceiver) throws MoneyFetchException {
@@ -67,17 +67,20 @@ public class UsersRepository {
         int betragReceiver = getMoneyForUsername(usernameReceiver) + money;
         if (betragSender < 0 || money <= 0)
             throw new IllegalStateException("Money has to be positive. A User cannot send more than he has.");
+        // manual commit and close is not necessary. The createTransactionAsync commits and autocloses depending on return value
         DB.createTransactionAsync(stm -> {
                     if (!stm.inTransaction()) {
                         throw new IllegalStateException("Currency Operations require a transaction");
                     }
                     try {
+                        stm.startTransaction();
                         stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", betragSender, usernameSender);
                         stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", betragReceiver, usernameReceiver);
+                        return true;
                     } catch (SQLException e) {
                         e.printStackTrace();
+                        return false;
                     }
-                    return false;
                 },
                 () -> KrassAlla.log.log(new LogRecord(Level.INFO, "Es wurde Geld überwiesen.")),
                 () -> KrassAlla.log.log(new LogRecord(Level.INFO, "Money could not be transferred. No Records have changed"))
