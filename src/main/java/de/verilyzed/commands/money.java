@@ -21,7 +21,7 @@ public class money {
             Player p = (Player) sender;
             // code for give-command
             if (args.length == 3)
-                if (args[0].toLowerCase().equals("give") || args[0].equals("send")) {
+                if (args[0].equalsIgnoreCase("give") || args[0].equals("send")) {
 
                     try {
                         UserService.sendMoney(p.getName(), args[1], Integer.parseInt(args[2]));
@@ -42,7 +42,6 @@ public class money {
             }
             if (args.length == 0) {
                 p.sendMessage(KrassAlla.PREFIX + "Du hast " + moneySender + " Geld");
-                return;
             }
         });
         return true;
