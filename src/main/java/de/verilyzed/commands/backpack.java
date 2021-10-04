@@ -18,7 +18,7 @@ import java.util.logging.LogRecord;
 
 public class backpack {
 
-    public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull Command command) {
 
         if (command.getName().equalsIgnoreCase("backpack")) {
             if (sender instanceof Player) {

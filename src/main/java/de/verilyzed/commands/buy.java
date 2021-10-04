@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class buy {
 
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String[] args) {
 
         if (command.getName().equalsIgnoreCase("buy")) {
             if (sender instanceof Player) {
@@ -23,8 +23,6 @@ public class buy {
                 menu.setItem(0, new MenuItem("Hello", new ItemStack(Material.DAMAGED_ANVIL)));
                 menu.open(p);
             }
-            return true;
         }
-        return false;
     }
 }

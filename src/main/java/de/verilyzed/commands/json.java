@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class json {
 
-    public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String[] args) {
 
         if (command.getName().equalsIgnoreCase("json")) {
             if (sender instanceof Player) {
@@ -41,11 +41,11 @@ public class json {
                                             p.sendMessage(KrassAlla.PREFIX + "The key " + args[2] + " does not exist.");
                                         }
                                     } else {
-                                        String keys = "";
+                                        StringBuilder keys = new StringBuilder();
                                         for (Object key : Objects.requireNonNull(jsonObject).keySet()) {
-                                            keys += key.toString() + ",";
+                                            keys.append(key.toString()).append(",");
                                         }
-                                        keys = keys.substring(0, keys.length() - 1);
+                                        keys = new StringBuilder(keys.substring(0, keys.length() - 1));
 
                                         p.sendMessage(KrassAlla.PREFIX + "§cSyntax: /json modify [Username] [" + keys + "]");
                                     }

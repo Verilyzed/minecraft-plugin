@@ -27,7 +27,7 @@ public class UserService {
                 throw new UpdateFailedException("User could not be written to DB.");
     }
 
-    public static void sendMoney(String nameSender, String nameReceiver, int Betrag) throws MoneySetException, MoneyFetchException {
+    public static void sendMoney(String nameSender, String nameReceiver, int Betrag) throws MoneyFetchException, UpdateFailedException {
         usersRepository.exchangeMoney(Betrag, nameSender, nameReceiver);
     }
 

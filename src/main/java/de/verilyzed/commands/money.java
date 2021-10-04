@@ -1,7 +1,7 @@
 package de.verilyzed.commands;
 
 import de.verilyzed.exceptions.MoneyFetchException;
-import de.verilyzed.exceptions.MoneySetException;
+import de.verilyzed.exceptions.UpdateFailedException;
 import de.verilyzed.krassalla.KrassAlla;
 import de.verilyzed.service.UserService;
 import org.bukkit.Bukkit;
@@ -12,26 +12,24 @@ import org.jetbrains.annotations.NotNull;
 
 public class money {
 
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String[] args) {
 
         if (!command.getName().equalsIgnoreCase("money") || !(sender instanceof Player)) {
-            return true;
+            return;
         }
         Bukkit.getScheduler().runTaskAsynchronously(KrassAlla.plugin, () -> {
             Player p = (Player) sender;
             // code for give-command
             if (args.length == 3)
                 if (args[0].equalsIgnoreCase("give") || args[0].equals("send")) {
-
                     try {
                         UserService.sendMoney(p.getName(), args[1], Integer.parseInt(args[2]));
-                    } catch (MoneySetException e) {
+                    } catch (UpdateFailedException e) {
                         p.sendMessage("Es wurde kein Geld gesendet, es ist ein Fehler aufgetreten.");
                     } catch (MoneyFetchException e) {
                         p.sendMessage("Der aktuelle Kontostand konnte nicht abgerufen werden.");
                     }
                     return;
-
                 }
             int moneySender = 0;
             try {
@@ -44,7 +42,6 @@ public class money {
                 p.sendMessage(KrassAlla.PREFIX + "Du hast " + moneySender + " Geld");
             }
         });
-        return true;
     }
 
 }

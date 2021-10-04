@@ -2,12 +2,15 @@ package de.verilyzed.persistence.repository;
 
 import co.aikar.idb.DB;
 import de.verilyzed.exceptions.MoneyFetchException;
+import de.verilyzed.exceptions.UpdateFailedException;
 import de.verilyzed.krassalla.KrassAlla;
 import de.verilyzed.persistence.model.User;
 import org.json.simple.JSONObject;
 
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -23,6 +26,7 @@ public class UsersRepository {
         }
         return ret;
     }
+
     public User getUserbyUUID(String uuid) {
         User user = null;
         try {
@@ -32,6 +36,7 @@ public class UsersRepository {
         }
         return user;
     }
+
     public User getUserbyName(String name) {
         User user = null;
         try {
@@ -57,14 +62,23 @@ public class UsersRepository {
         });
     }
 
-    public void updateMoneyForUsername(int money, String username) {
+    public void updateMoneyForUsername(int money, String username) throws UpdateFailedException {
         CompletableFuture<Integer> ret = DB.executeUpdateAsync("UPDATE users SET money = ? WHERE name = ?", money, username);
-
+        int value=-1;
+        try {
+            value = ret.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        if (value != 1) {
+            throw new UpdateFailedException("Money was not updated");
+        }
     }
 
-    public void exchangeMoney(int money, String usernameSender, String usernameReceiver) throws MoneyFetchException {
+    public void exchangeMoney(int money, String usernameSender, String usernameReceiver) throws MoneyFetchException, UpdateFailedException {
         int betragSender = getMoneyForUsername(usernameSender) - money;
         int betragReceiver = getMoneyForUsername(usernameReceiver) + money;
+        AtomicBoolean ret = new AtomicBoolean(true);
         if (betragSender < 0 || money <= 0)
             throw new IllegalStateException("Money has to be positive. A User cannot send more than he has.");
         // manual commit and close is not necessary. The createTransactionAsync commits and autocloses depending on return value
@@ -83,8 +97,12 @@ public class UsersRepository {
                     }
                 },
                 () -> KrassAlla.log.log(new LogRecord(Level.INFO, "Es wurde Geld überwiesen.")),
-                () -> KrassAlla.log.log(new LogRecord(Level.INFO, "Money could not be transferred. No Records have changed"))
-        );
+                () -> {
+                    KrassAlla.log.log(new LogRecord(Level.INFO, "Money could not be transferred. No Records have changed"));
+                ret.set(false);
+        });
+        if(!ret.get())
+            throw new UpdateFailedException("No money has been transferred.");
     }
 
     public boolean userExists(String uuid) {

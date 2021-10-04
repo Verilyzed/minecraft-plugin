@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class echo {
 
-    public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String[] strings) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             if (command.getName().equalsIgnoreCase("echo")) {

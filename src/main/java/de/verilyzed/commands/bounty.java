@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class bounty {
 
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String[] args) {
         if (command.getName().equalsIgnoreCase("bounty")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
@@ -20,7 +20,7 @@ public class bounty {
                     if (args[0].equalsIgnoreCase("add")) {
                         if (args.length != 3) {
                             p.sendMessage(KrassAlla.PREFIX + "§cSyntax: /bounty add <Player> <Amount>");
-                            return true;
+                            return;
                         }
                         int amount;
                         try {
@@ -28,13 +28,13 @@ public class bounty {
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                             p.sendMessage(KrassAlla.PREFIX + "§cSyntax: /bounty add <Player> <Amount>");
-                            return true;
+                            return;
                         }
                         p.sendMessage("A:" + args[1]);
                         String uuidReceiver = UserService.getUuidByName(args[1]);
                         if (uuidReceiver == null) {
                             p.sendMessage(KrassAlla.PREFIX + "§cDieser User war bis jetzt noch nie auf dem Server.");
-                            return true;
+                            return;
                         }
 
                         Bounty bounty = new Bounty(uuidReceiver, amount);
@@ -55,6 +55,5 @@ public class bounty {
             }
         }
 
-        return false;
     }
 }

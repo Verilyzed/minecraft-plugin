@@ -10,9 +10,8 @@ import java.util.logging.Level;
 
 public class test {
 
-    public void onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull Command command) {
         if (sender instanceof Player) {
-            Player p = ((Player) sender).getPlayer();
 
             if (command.getName().equalsIgnoreCase("test")) {
 
