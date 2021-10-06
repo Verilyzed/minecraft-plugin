@@ -15,6 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -77,6 +78,12 @@
     </distributionManagement>
     <dependencies>
         <dependency>
+            <groupId>com.github.seeseemelk</groupId>
+            <artifactId>MockBukkit-v1.17</artifactId>
+            <version>1.7.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>ninja.amp</groupId>
             <artifactId>ampmenus</artifactId>
             <version>1.10.0</version>
@@ -104,8 +111,8 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>3.12.4</version>
+            <artifactId>mockito-inline</artifactId>
+            <version>3.9.0</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

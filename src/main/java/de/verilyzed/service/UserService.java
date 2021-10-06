@@ -35,7 +35,7 @@ public class UserService {
         return usersRepository.getUserbyUUID(uuid).getBackpack();
     }
 
-    public static void setBackpack(String uuid, JSONObject backpack) {
+    public static void setBackpack(String uuid, JSONObject backpack) throws UpdateFailedException {
         usersRepository.updateBackpack(uuid, backpack);
     }
 

@@ -8,13 +8,13 @@ import de.verilyzed.persistence.model.User;
 import org.json.simple.JSONObject;
 
 import java.sql.SQLException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 public class UsersRepository {
+
+
 
     public int getMoneyForUsername(String username) throws MoneyFetchException {
         int ret;
@@ -63,33 +63,40 @@ public class UsersRepository {
     }
 
     public void updateMoneyForUsername(int money, String username) throws UpdateFailedException {
-        CompletableFuture<Integer> ret = DB.executeUpdateAsync("UPDATE users SET money = ? WHERE name = ?", money, username);
-        int value=-1;
+        int ret = 0;
         try {
-            value = ret.get();
-        } catch (InterruptedException | ExecutionException e) {
+            ret = DB.executeUpdate("UPDATE users SET money = ? WHERE name = ?", money, username);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (value != 1) {
-            throw new UpdateFailedException("Money was not updated");
+        switch (ret) {
+            case 1:
+                return;
+            case 0:
+                throw new UpdateFailedException("There was an error, no records have been updated.");
+            default:
+                throw new UpdateFailedException("There was an error");
         }
     }
 
     public void exchangeMoney(int money, String usernameSender, String usernameReceiver) throws MoneyFetchException, UpdateFailedException {
-        int betragSender = getMoneyForUsername(usernameSender) - money;
-        int betragReceiver = getMoneyForUsername(usernameReceiver) + money;
+        int amountSender = getMoneyForUsername(usernameSender) - money;
+        int amountReceiver = getMoneyForUsername(usernameReceiver) + money;
         AtomicBoolean ret = new AtomicBoolean(true);
-        if (betragSender < 0 || money <= 0)
-            throw new IllegalStateException("Money has to be positive. A User cannot send more than he has.");
-        // manual commit and close is not necessary. The createTransactionAsync commits and autocloses depending on return value
+        if (amountSender < 0 || money <= 0)
+            throw new IllegalStateException("Money has to be positive, the user cannot send more than he has.");
+        // manual commit and close is not necessary.
+        // The createTransactionAsync commits and autocloses depending on return value.
+        // ret is only true, if the transaction has committed successfully.
+        // If it hasn't, an exception will be thrown.
         DB.createTransactionAsync(stm -> {
                     if (!stm.inTransaction()) {
                         throw new IllegalStateException("Currency Operations require a transaction");
                     }
                     try {
                         stm.startTransaction();
-                        stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", betragSender, usernameSender);
-                        stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", betragReceiver, usernameReceiver);
+                        stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", amountSender, usernameSender);
+                        stm.executeUpdateQuery("UPDATE users SET money = ? WHERE name = ?", amountReceiver, usernameReceiver);
                         return true;
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -114,13 +121,17 @@ public class UsersRepository {
         return false;
     }
 
-    public void updateBackpack(String uuid, JSONObject backpack) {
-        DB.executeUpdateAsync("UPDATE users SET backpack = ? WHERE uuid = ?", backpack.toJSONString(), uuid);
+    public void updateBackpack(String uuid, JSONObject backpack) throws UpdateFailedException {
+        try {
+            DB.executeUpdate("UPDATE users SET backpack = ? WHERE uuid = ?", backpack.toJSONString(), uuid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new UpdateFailedException("The Backpack could not be written to database.");
+        }
     }
 
     public String getUuid(String name) {
         String uuid = null;
-
         try {
             uuid = DB.getFirstColumn("SELECT uuid FROM users WHERE name = ?", name).toString();
         } catch (SQLException e) {

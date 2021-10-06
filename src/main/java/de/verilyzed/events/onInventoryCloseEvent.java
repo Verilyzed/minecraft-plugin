@@ -1,5 +1,6 @@
 package de.verilyzed.events;
 
+import de.verilyzed.exceptions.UpdateFailedException;
 import de.verilyzed.krassalla.KrassAlla;
 import de.verilyzed.service.UserService;
 import net.kyori.adventure.text.TextComponent;
@@ -16,7 +17,7 @@ public class onInventoryCloseEvent implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
-        if(!(e.getView().title() instanceof TextComponent))
+        if (!(e.getView().title() instanceof TextComponent))
             return;
         TextComponent tc = (TextComponent) e.getView().title();
         if (!tc.content().contains("Backpack")) {
@@ -36,7 +37,17 @@ public class onInventoryCloseEvent implements Listener {
                 obj.put(i, itemJSON);
             }
         }
-        UserService.setBackpack(e.getPlayer().getUniqueId().toString(), obj);
-
+        int numTries = 3;
+        while (true) {
+            try {
+                UserService.setBackpack(e.getPlayer().getUniqueId().toString(), obj);
+                break;
+            } catch (UpdateFailedException ex) {
+                if (--numTries == 0) {
+                    e.getPlayer().sendMessage("Your backpack has not been updated. Your items may be lost.");
+                    return;
+                }
+            }
+        }
     }
 }

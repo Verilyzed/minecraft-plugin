@@ -15,7 +15,6 @@ import de.verilyzed.tabcompleter.JsonTabCompleter;
 import de.verilyzed.tabcompleter.MoneyTabCompleter;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,7 +27,7 @@ public final class KrassAlla extends JavaPlugin {
     public static String PREFIX;
     Database db;
     public static String dataFolder;
-    public static JavaPlugin plugin;
+    public static KrassAlla plugin;
 
     @Override
     public void onEnable() {
